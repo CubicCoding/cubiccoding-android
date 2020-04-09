@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="splash_logo_large_width">320dp</dimen>
+    <dimen name="splash_logo_large_height">140dp</dimen>
+
+    <dimen name="splash_logo_medium_width">240dp</dimen>
+    <dimen name="splash_logo_medium_height">105dp</dimen>
+    <dimen name="common_edge_space">15dp</dimen>
+    <dimen name="bottom_splash_header_size">28sp</dimen>
+    <dimen name="voucher_fab_icon_size">32dp</dimen>
+    <dimen name="info_fab_icon_size">28dp</dimen>
+    <dimen name="login_fab_icon_size">28dp</dimen>
+    <dimen name="fab_icon_custom_size">60dp</dimen>
+    <dimen name="splash_logo_bg_height">250dp</dimen>
+    <dimen name="splash_fab_label_size">16sp</dimen>
+    <dimen name="splash_network_icon_size">55dp</dimen>
+    <dimen name="splash_network_icon_padding">8dp</dimen>
+    <dimen name="splash_address_text_size">13sp</dimen>
+    <dimen name="pull_handle_size">30dp</dimen>
+    <dimen name="bottom_actions_size_requested">300dp</dimen>
+    <dimen name="bottom_actions_btn_vertical_space">7dp</dimen>
+    <dimen name="bottom_actions_btn_width">280dp</dimen>
+    <dimen name="bottom_actions_edittext_margin_bottom">10dp</dimen>
+    <dimen name="bottom_actions_edittext_size">22sp</dimen>
+    <dimen name="bottom_actions_login_margin_top">15dp</dimen>
+    <dimen name="bottom_actions_login_padding_horizontal">15dp</dimen>
+    <dimen name="bottom_actions_login_margin_vertical">10dp</dimen>
+    <dimen name="bottom_actions_login_text_size">20sp</dimen>
+    <dimen name="progress_size">30dp</dimen>
+    <dimen name="horizontal_progress_width">280dp</dimen>
+    <dimen name="horizontal_progress_height">20dp</dimen>
+    <dimen name="progress_dialog_vertical_space">30dp</dimen>
+    <dimen name="progress_dialog_icon_size">50dp</dimen>
+
+</resources>

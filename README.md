@@ -1,1 +1,2 @@
-# cubiccoding-android
+# Score Board Android
+Scoreboard Android.

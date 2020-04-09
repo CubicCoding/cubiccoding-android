@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/pullHandle"
+        android:layout_width="@dimen/pull_handle_size"
+        android:layout_height="@dimen/pull_handle_size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_drag_handle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/bottomSplashHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/prompt"
+        android:text="@string/register_voucher"
+        android:textSize="@dimen/bottom_splash_header_size"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pullHandle" />
+
+    <!--    Size pusher trick...-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_actions_size_requested"
+        app:layout_constraintTop_toTopOf="@id/bottomSplashHeader" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ccVoucherInputLayout"
+        style="@style/TextInputLayoutStyle"
+        android:hint="@string/insert_voucher"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/uploadVoucherButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bottomSplashHeader"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ccVoucher"
+            style="@style/TextInputEditTextStyle"
+            android:drawableEnd="@drawable/ic_verified"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/uploadVoucherButton"
+        style="@style/ActionButton"
+        android:text="@string/register"
+        android:layout_marginTop="@dimen/bottom_actions_login_margin_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ccVoucherInputLayout"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

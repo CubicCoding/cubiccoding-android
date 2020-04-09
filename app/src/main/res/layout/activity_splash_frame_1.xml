@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/splashRoot"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".front.splash.Splash">
+
+    <View
+        android:id="@+id/logoBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/splash_logo_bg_height"
+        android:background="@color/colorPrimary"
+        android:alpha="0.4"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bottomLogoBg"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/logoBg" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/splashLogo"
+        android:layout_width="@dimen/splash_logo_large_width"
+        android:layout_height="@dimen/splash_logo_large_height"
+        android:src="@drawable/cc_logo_splash"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/loginFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:src="@drawable/ic_login"
+        android:tint="@color/white"
+        app:fabCustomSize="@dimen/fab_icon_custom_size"
+        app:maxImageSize="@dimen/login_fab_icon_size"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bottomLogoBg"
+        app:layout_constraintBottom_toBottomOf="@id/bottomLogoBg"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/voucherFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:src="@drawable/ic_verified"
+        android:tint="@color/white"
+        app:fabCustomSize="@dimen/fab_icon_custom_size"
+        app:maxImageSize="@dimen/voucher_fab_icon_size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/infoFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:src="@drawable/ic_info"
+        android:tint="@color/white"
+        app:fabCustomSize="@dimen/fab_icon_custom_size"
+        app:maxImageSize="@dimen/info_fab_icon_size"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bottomLogoBg"
+        app:layout_constraintBottom_toBottomOf="@id/bottomLogoBg"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/loginFabLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/prompt"
+        android:text="@string/login"
+        android:textStyle="bold"
+        android:textSize="@dimen/splash_fab_label_size"
+        app:layout_constraintLeft_toLeftOf="@id/loginFab"
+        app:layout_constraintRight_toRightOf="@id/loginFab"
+        app:layout_constraintTop_toBottomOf="@id/loginFab" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/voucherFabLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/prompt"
+        android:text="@string/voucher"
+        android:textStyle="bold"
+        android:textSize="@dimen/splash_fab_label_size"
+        app:layout_constraintLeft_toLeftOf="@id/voucherFab"
+        app:layout_constraintRight_toRightOf="@id/voucherFab"
+        app:layout_constraintTop_toBottomOf="@id/voucherFab" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/infoFabLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/prompt"
+        android:text="@string/info"
+        android:textStyle="bold"
+        android:textSize="@dimen/splash_fab_label_size"
+        app:layout_constraintLeft_toLeftOf="@id/infoFab"
+        app:layout_constraintRight_toRightOf="@id/infoFab"
+        app:layout_constraintTop_toBottomOf="@id/infoFab" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/facebookIcon"
+        android:layout_width="@dimen/splash_network_icon_size"
+        android:layout_height="@dimen/splash_network_icon_size"
+        android:visibility="invisible"
+        android:padding="@dimen/splash_network_icon_padding"
+        android:layout_margin="@dimen/common_edge_space"
+        android:onClick="launchFacebook"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:srcCompat="@drawable/ic_fb"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/twitterIcon"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/twitterIcon"
+        android:layout_width="@dimen/splash_network_icon_size"
+        android:layout_height="@dimen/splash_network_icon_size"
+        android:visibility="invisible"
+        android:padding="@dimen/splash_network_icon_padding"
+        android:layout_margin="@dimen/common_edge_space"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:onClick="launchTwitter"
+        app:srcCompat="@drawable/ic_twitter"
+        app:layout_constraintLeft_toRightOf="@id/facebookIcon"
+        app:layout_constraintRight_toLeftOf="@+id/instagramIcon"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/instagramIcon"
+        android:layout_width="@dimen/splash_network_icon_size"
+        android:layout_height="@dimen/splash_network_icon_size"
+        android:visibility="invisible"
+        android:padding="@dimen/splash_network_icon_padding"
+        android:layout_margin="@dimen/common_edge_space"
+        android:onClick="launchInstagram"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_instagram"
+        app:layout_constraintLeft_toRightOf="@id/twitterIcon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/addressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:fontFamily="@font/prompt"
+        android:text="@string/cc_website"
+        android:autoLink="web"
+        android:visibility="invisible"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColorLink="@color/smooth_black"
+        android:layout_marginLeft="@dimen/common_edge_space"
+        android:layout_marginRight="@dimen/common_edge_space"
+        android:textSize="@dimen/splash_address_text_size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/facebookIcon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
