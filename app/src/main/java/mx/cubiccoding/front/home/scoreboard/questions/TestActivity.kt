@@ -47,26 +47,6 @@ class TestActivity: AppCompatActivity() {
         optionsRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         optionsRecyclerView.adapter = adapter
 
-        uploadAnswers.setOnClickListener {
-            val optionsSelected = adapter.getOptionsSelected()
-            if (optionsSelected.isEmpty()) {
-                showFancyToast(this@TestActivity, getString(R.string.select_an_option))
-            } else {
-                val testUuid = intent?.getStringExtra(TEST_ID_EXTRA) ?: ""
-                val answers = optionsSelected.toString()
-                with(ConfirmActionDialog(this@TestActivity)) {
-                    setContentMessage(getString(R.string.you_have_selected_values, answers))
-                    setConfirmationButtonLabel(getString(R.string.confirm)) {dialog ->
-                        dialog.dismiss()
-                        provideFeedback()
-                        uploadAnswer(testUuid, answers)
-                        disableUploadAnswersButton()
-
-                    }
-                }.show()
-            }
-        }
-
         fetchTest()
     }
 
@@ -75,9 +55,7 @@ class TestActivity: AppCompatActivity() {
         uploadAnswers.alpha = 0.5F
     }
 
-    private fun uploadAnswer(testUuid: String, answers: String) {
-
-        //TODO: Update isAnswered column...
+    private fun uploadAnswer(testUuid: String, answers: String, optionsSelected: List<Int>) {
 
         if (testUuid.isEmpty() || answers.isEmpty()) {
             showFancyToast(this, getString(R.string.missing_info_try_again_later))
@@ -106,7 +84,13 @@ class TestActivity: AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
 
                 //Is fair to mark now the question as answered, since it is enqueued and will immediately be uploaded if possible...
-                CubicCodingDB.getDatabaseInstance().getQuestionDao().updateIsAnswered(testUuid, true)
+                val questionDao = CubicCodingDB.getDatabaseInstance().getQuestionDao()
+                questionDao.updateIsAnswered(testUuid, true)
+
+                //Keep track of the answered questions to allow users to watch their answers later on if needed...
+                val answeredArray = JSONArray()
+                optionsSelected.forEach { answeredArray.put(it) }
+                questionDao.updateAnswered(testUuid, answeredArray.toString())
 
                 val response = ScoreboardRequest.uploadAnswer(testUuid, answers)
                 if (response == ScoreboardRequest.UploadAnswerStatus.SUCCESS) {//Only if immediate upload is successful then cancel the enqueued work, otherwise move on...
@@ -159,10 +143,45 @@ class TestActivity: AppCompatActivity() {
     }
 
     private fun populateQuestion(options: List<QuestionOptionsAdapter.OptionItem>, answers: List<Int>, questionInfo: QuestionEntity) {
-        adapter.populateOptions(options, answers)
         testId.text = getString(R.string.test_id_value, questionInfo.testUuid)
-        maxScoreLabel.text = getString(R.string.max_score_value, questionInfo.maxScore.toString())
+        maxScoreLabel.text =
+            getString(R.string.max_score_value, questionInfo.maxScore.toString())
         questionContent.text = questionInfo.questionTitle
         this.questionInfo = questionInfo
+
+        val answered = questionInfo.answered
+        if (questionInfo.isAnswered == true && answered?.isNotEmpty() == true) {
+            //Get the answered options and populate them...
+            val answeredJsonArray = JSONArray(answered)
+            val answered = mutableListOf<Int>()
+            for (index in 0 until answeredJsonArray.length()) {
+                answered.add(answeredJsonArray.getInt(index))
+            }
+            adapter.populateOptions(options, answers, answered)
+            provideFeedback()
+            uploadAnswers.isEnabled = false
+            uploadAnswers.alpha = 0.4F
+        } else {
+            adapter.populateOptions(options, answers)
+            uploadAnswers.setOnClickListener {
+                val optionsSelected = adapter.getOptionsSelected()
+                if (optionsSelected.isEmpty()) {
+                    showFancyToast(this@TestActivity, getString(R.string.select_an_option))
+                } else {
+                    val testUuid = intent?.getStringExtra(TEST_ID_EXTRA) ?: ""
+                    val answers = optionsSelected.toString()
+                    with(ConfirmActionDialog(this@TestActivity)) {
+                        setContentMessage(getString(R.string.you_have_selected_values, answers))
+                        setConfirmationButtonLabel(getString(R.string.confirm)) { dialog ->
+                            dialog.dismiss()
+                            provideFeedback()
+                            uploadAnswer(testUuid, answers, optionsSelected)
+                            disableUploadAnswersButton()
+
+                        }
+                    }.show()
+                }
+            }
+        }
     }
 }

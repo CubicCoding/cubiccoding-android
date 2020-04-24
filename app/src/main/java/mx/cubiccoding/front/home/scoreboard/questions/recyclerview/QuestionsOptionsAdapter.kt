@@ -22,7 +22,15 @@ class QuestionOptionsAdapter: RecyclerView.Adapter<OptionViewHolder>() {
     override fun getItemCount() = options.size
     override fun onBindViewHolder(holder: OptionViewHolder, position: Int) { holder.bind(options[position], shouldDisable) }
 
-    fun populateOptions(scoreboard: List<OptionItem>, answers: List<Int>) {
+    fun populateOptions(scoreboard: List<OptionItem>, answers: List<Int>, answered: List<Int> = emptyList()) {
+
+        //If we have answered questions then prepopulate them...
+        if (answered.isNotEmpty()) {
+            answered.forEach {
+                scoreboard[it].checked = true
+            }
+        }
+
         this.answers = answers
         this.options.clear()
         this.options.addAll(scoreboard)
@@ -54,7 +62,6 @@ class QuestionOptionsAdapter: RecyclerView.Adapter<OptionViewHolder>() {
             val option = options[index]
 
             //It doesn't matter if is checked or not, let's show which is the right now...
-
             if (option.checked) {//Verify if is correct/incorrect...
                 if (answers?.contains(index) == true) {
                     optionsAnsweredCorrectly++

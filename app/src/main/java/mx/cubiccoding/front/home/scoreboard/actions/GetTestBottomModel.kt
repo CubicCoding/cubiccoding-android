@@ -16,12 +16,7 @@ class GetTestBottomModel: BaseMVPModel() {
 
     fun getTestQuestion(uuid: String, callback: GenericRequestListener<String, Throwable>) {
         launch(Dispatchers.IO) {
-            val question = CubicCodingDB.getDatabaseInstance().getQuestionDao().getQuestion(uuid)
-            if (question?.isAnswered == true) {//Question is already answered in our records, notify user about this...
-                callback.onFail(CubicCodingRequestException("Question already answered", RequestErrorType.QUESTION_ALREADY_ANSWERED))
-            } else {
-                ScoreboardRequest.getTestQuestion(uuid, callback)
-            }
+            ScoreboardRequest.getTestQuestion(uuid, callback)
         }
     }
 }

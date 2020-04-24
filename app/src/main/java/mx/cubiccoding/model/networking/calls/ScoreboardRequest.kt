@@ -166,7 +166,7 @@ object ScoreboardRequest {
                 val answersString = answersJsonArray.toString()
 
                 Timber.e("Storing into db options: $optionsString, answers: $answersString")
-                CubicCodingDB.getDatabaseInstance().getQuestionDao().insert(QuestionEntity(testQuestions.uuid ?: "", testQuestions.label, testQuestions.questionTitle, optionsString, answersString, testQuestions.maxScore))
+                CubicCodingDB.getDatabaseInstance().getQuestionDao().insert(QuestionEntity(testQuestions.uuid ?: "", testQuestions.label, testQuestions.questionTitle, optionsString, answersString, "", testQuestions.maxScore))
 
                 callback.onResult(testQuestions.uuid)
             } else {
