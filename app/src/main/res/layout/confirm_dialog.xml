@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/confirmDialogIcon"
+        android:layout_width="@dimen/progress_dialog_icon_size"
+        android:layout_height="@dimen/progress_dialog_icon_size"
+        android:layout_marginTop="@dimen/progress_dialog_vertical_space"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_cc_no_bg"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/alertDialogContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/prompt"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_marginTop="@dimen/common_edge_space"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textSize="17sp"
+        android:ellipsize="end"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/confirmationButton"
+        style="@style/ActionButton"
+        android:text="@string/answer"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="@dimen/common_edge_space"
+        android:layout_gravity="center_horizontal"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/progress_dialog_vertical_space"/>
+
+</LinearLayout>

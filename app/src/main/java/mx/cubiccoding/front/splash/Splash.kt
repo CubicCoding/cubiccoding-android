@@ -9,7 +9,9 @@ import mx.cubiccoding.front.splash.SplashNetworkActions.NetworkApp
 import mx.cubiccoding.front.splash.actions.info.InfoBottomDialogFragment
 import mx.cubiccoding.front.splash.actions.LoginBottomDialogFragment
 import mx.cubiccoding.front.splash.actions.voucher.VoucherBottomDialogFragment
+import mx.cubiccoding.front.utils.IntentUtils
 import mx.cubiccoding.front.utils.views.TransitionToScreenAnimations
+import mx.cubiccoding.persistence.preferences.UserPersistedData
 
 
 class Splash : AppCompatActivity() {
@@ -23,14 +25,18 @@ class Splash : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            setContentView(R.layout.activity_splash_frame_1)
-            startIntroAnimation()
-        } else {
-            setContentView(R.layout.activity_splash_frame_2)
-        }
 
-        setupViews()
+        if (UserPersistedData.isLogged) {//Deeplink into home directly if we are logged...
+            IntentUtils.launchHomeActivity(this)
+        } else {
+            if (savedInstanceState == null) {
+                setContentView(R.layout.activity_splash_frame_1)
+                startIntroAnimation()
+            } else {
+                setContentView(R.layout.activity_splash_frame_2)
+            }
+            setupViews()
+        }
     }
 
     private fun startIntroAnimation() {

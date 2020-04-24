@@ -4,9 +4,16 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'com.google.gms.google-services'
+
+apply plugin: 'com.google.firebase.crashlytics'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+
     defaultConfig {
         applicationId "mx.cubiccoding"
         minSdkVersion 21
@@ -17,6 +24,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -28,6 +36,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 
 dependencies {
@@ -37,6 +49,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation "androidx.browser:browser:1.2.0"
     implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -55,4 +68,26 @@ dependencies {
 
     //Multidex
     implementation 'androidx.multidex:multidex:2.0.1'
+
+    //Fragment container,etc...
+    implementation "androidx.fragment:fragment-ktx:1.2.4"
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+
+    // WorkManager
+    implementation "androidx.work:work-runtime-ktx:2.3.4"
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta04'
+    implementation 'com.google.firebase:firebase-messaging:20.1.5'
+
+    //Rooms implementation
+    def room_version = "2.2.5"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
+
 }

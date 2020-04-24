@@ -6,6 +6,9 @@ import mx.cubiccoding.BuildConfig
 import timber.log.Timber
 
 class CubicCodingApplication: MultiDexApplication() {
+
+    var shouldAnimateProfile = true//This flag will be used to animate profile only once during the lifecycle of the application(non-persisted)
+
     companion object {
         lateinit var instance: CubicCodingApplication
             private set

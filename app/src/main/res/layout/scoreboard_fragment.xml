@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_smoke">
+
+    <View
+        android:id="@+id/topbarBg"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/question"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:padding="13dp"
+        android:src="@drawable/ic_question_answer"
+        android:tint="@color/white"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topbarGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        app:layout_constraintTop_toBottomOf="@id/topbarGuideline"
+        app:layout_constraintBottom_toTopOf="@id/topbarGuideline" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/prompt"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="@string/scoreboard"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintTop_toTopOf="@id/topbarBg"
+        app:layout_constraintBottom_toBottomOf="@id/topbarBg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/prize"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/prompt"
+        android:gravity="left|bottom"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="Amazon Gift Card"
+        android:textStyle="bold"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/topbarBg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/lastSync"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/lastSync"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/prompt"
+        android:gravity="right|bottom"
+        android:drawableRight="@drawable/ic_update"
+        android:drawablePadding="5dp"
+        android:layout_marginBottom="2dp"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="Amazon Gift Card"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        app:layout_constraintTop_toTopOf="@id/prize"
+        app:layout_constraintBottom_toBottomOf="@id/prize"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/prize"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/scoreboardRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/bottom_navigation_height"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/emptyScoreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:visibility="gone"
+        android:ellipsize="end"
+        android:fontFamily="@font/prompt"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="@string/no_scores"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:visibility="invisible"
+        android:background="@drawable/shadow_down"
+        app:layout_constraintTop_toBottomOf="@id/prize" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

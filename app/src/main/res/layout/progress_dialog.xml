@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/progressIcon"
@@ -18,17 +17,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/prompt"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
         android:layout_marginTop="@dimen/progress_dialog_vertical_space"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/app_name"
-        android:textSize="@dimen/bottom_splash_header_size"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pullHandle" />
+        android:textSize="25sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textStyle="bold" />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -52,12 +50,11 @@
         android:gravity="center"
         android:text="@string/app_name"
         android:textSize="17sp"
+        android:lines="2"
+        android:ellipsize="end"
         android:textStyle="bold"
         android:textColor="@color/error_red"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pullHandle" />
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"

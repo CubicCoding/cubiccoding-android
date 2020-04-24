@@ -1,15 +1,26 @@
 package mx.cubiccoding.front.signup
 
 import android.os.Bundle
+import android.view.Gravity
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_signup_frame_1.*
-import kotlinx.android.synthetic.main.activity_splash_frame_1.*
+import kotlinx.android.synthetic.main.activity_signup_frame_1.ccPassword
+import kotlinx.android.synthetic.main.activity_signup_frame_1.ccRetryPassword
+import kotlinx.android.synthetic.main.activity_signup_frame_1.ccUsername
+import kotlinx.android.synthetic.main.activity_signup_frame_1.signMeUpButton
 import kotlinx.android.synthetic.main.activity_splash_frame_1.splashRoot
 import mx.cubiccoding.R
 import mx.cubiccoding.front.utils.views.ProgressActionDialog
 import mx.cubiccoding.front.utils.views.TransitionToScreenAnimations
-import mx.cubiccoding.model.dtos.GetVoucherPayload
+import mx.cubiccoding.front.utils.views.showFancyToast
+import mx.cubiccoding.model.dtos.GetVoucherResponsePayload
+import mx.cubiccoding.model.networking.CubicCodingRequestException
+import mx.cubiccoding.model.utils.getErrorMessageForRegistration
 import mx.cubiccoding.model.utils.getErrorMessageForVoucherVerification
+import mx.cubiccoding.front.signup.SignupPresenter.RegistrationInputError
+import mx.cubiccoding.front.utils.IntentUtils
+import timber.log.Timber
+import java.lang.IllegalStateException
 
 
 class SignupActivity : AppCompatActivity(), SignupViewContract {
@@ -20,7 +31,8 @@ class SignupActivity : AppCompatActivity(), SignupViewContract {
     }
 
     private val presenter by lazy { SignupPresenter() }
-    private var progressDialog: ProgressActionDialog? = null
+    private var verifyVoucherDialog: ProgressActionDialog? = null
+    private var registerDialog: ProgressActionDialog? = null
 
     private val voucherTransitionAnimations by lazy { TransitionToScreenAnimations() }
 
@@ -40,6 +52,7 @@ class SignupActivity : AppCompatActivity(), SignupViewContract {
 
     private fun setupViews() {
         signMeUpButton.setOnClickListener(presenter::presentRegister)
+        ccRetryPassword.setOnEditorActionListener(presenter::presentConfirmOkAction)
     }
 
     override fun onDestroy() {
@@ -63,24 +76,23 @@ class SignupActivity : AppCompatActivity(), SignupViewContract {
      * ================================================
      */
     override fun showVerifyingVoucher() {
-        if (progressDialog == null) {
-            progressDialog = ProgressActionDialog(this, getString(R.string.validating), R.drawable.ic_verified)
+        if (verifyVoucherDialog == null) {
+            verifyVoucherDialog = ProgressActionDialog(this, getString(R.string.validating), R.drawable.ic_verified)
         }
-        progressDialog?.setCancelable(false)
-        progressDialog?.show()
-
+        verifyVoucherDialog?.setCancelable(false)
+        verifyVoucherDialog?.show()
     }
 
-    override fun voucherVerificationSuccess(response: GetVoucherPayload) {
-        progressDialog?.dismiss(true)
+    override fun voucherVerificationSuccess(response: GetVoucherResponsePayload) {
+        verifyVoucherDialog?.dismiss(true)
     }
 
     override fun voucherVerificationFailed(error: Throwable) {
-        progressDialog?.setCancelable(true)
-        progressDialog?.setOnCancelListener {
+        verifyVoucherDialog?.setCancelable(true)
+        verifyVoucherDialog?.setOnCancelListener {
             finish()
         }
-        progressDialog?.setErrorMessage(getErrorMessageForVoucherVerification(this, error))
+        verifyVoucherDialog?.setErrorMessage(getErrorMessageForVoucherVerification(this, error))
     }
 
     override fun getRegistrationInput(): SignupPresenter.RegistrationInput {
@@ -88,5 +100,59 @@ class SignupActivity : AppCompatActivity(), SignupViewContract {
             ccUsername.text.toString(),
             ccPassword.text.toString(),
             ccRetryPassword.text.toString())
+    }
+
+    override fun formValidationFailed(registerInputError: RegistrationInputError) {
+        val (message, focusId) = when(registerInputError) {
+            RegistrationInputError.EMPTY_USERNAME -> Pair(getString(R.string.insert_username), R.id.ccUsername)
+            RegistrationInputError.SHORT_USERNAME -> Pair(getString(R.string.username_too_short), R.id.ccUsername)
+            RegistrationInputError.EMPTY_PASSWORD -> Pair(getString(R.string.insert_password), R.id.ccPassword)
+            RegistrationInputError.SHORT_PASSWORD -> Pair(getString(R.string.password_too_short), R.id.ccPassword)
+            RegistrationInputError.CONFIRM_PASSWORD -> Pair(getString(R.string.insert_confirm), R.id.ccRetryPassword)
+            RegistrationInputError.DIFFERENT_PASSWORDS -> Pair(getString(R.string.error_in_passwords), R.id.ccPassword)
+            else -> throw IllegalStateException("Unhandled registration input error, check the logic in SignupPresenter...")
+        }
+
+        showFancyToast(this, message, Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM)
+        findViewById<EditText>(focusId).requestFocus()
+    }
+
+    override fun showRegistering() {
+        if (registerDialog == null) {
+            registerDialog = ProgressActionDialog(this, getString(R.string.registering), R.drawable.ic_user)
+        } else {//Reuse dialog...
+            registerDialog?.updateTitle(getString(R.string.registering))
+            registerDialog?.updateIcon(R.drawable.ic_user)
+        }
+        registerDialog?.setCancelable(false)
+        registerDialog?.show()
+    }
+
+    override fun registerSuccess() {
+        registerDialog?.updateTitle(getString(R.string.logging_in))
+
+        presenter.presentLogin()
+    }
+
+    override fun registerFailed(error: Throwable) {
+        val message = when(error) {
+            is CubicCodingRequestException -> getErrorMessageForRegistration(this, error)
+            else -> getString(R.string.error_during_register)
+        }
+        registerDialog?.setErrorMessage(message)
+        registerDialog?.setCancelable(true)
+    }
+
+    override fun loginSuccess() {
+        registerDialog?.dismiss()
+        showFancyToast(this, getString(R.string.you_logged_in))
+
+        IntentUtils.launchHomeActivity(this)
+        finish()
+    }
+
+    override fun loginFailed() {
+        registerDialog?.dismiss()
+        showFancyToast(this, getString(R.string.error_login_in_try_again))
     }
 }

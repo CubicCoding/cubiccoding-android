@@ -164,7 +164,7 @@
         android:visibility="invisible"
         android:textStyle="bold"
         android:gravity="center"
-        android:textColorLink="@color/smooth_black"
+        android:textColorLink="@color/deep_gray"
         android:layout_marginLeft="@dimen/common_edge_space"
         android:layout_marginRight="@dimen/common_edge_space"
         android:textSize="@dimen/splash_address_text_size"

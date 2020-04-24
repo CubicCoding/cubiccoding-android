@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_smoke">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profileRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/mainBg"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/colorPrimaryDeepDark"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/middleAnchor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@+id/mainBg" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/profileCCLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:padding="12dp"
+            android:src="@drawable/cc_banner"
+            android:alpha=".8"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/avatarRing"/>
+
+        <View
+            android:id="@+id/avatarRing"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/white_circle"
+            app:layout_constraintBottom_toTopOf="@id/middleAnchor"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/middleAnchor" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/avatar"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
+            android:background="@drawable/white_circle"
+            app:layout_constraintBottom_toBottomOf="@id/avatarRing"
+            app:layout_constraintLeft_toLeftOf="@id/avatarRing"
+            app:layout_constraintRight_toRightOf="@id/avatarRing"
+            app:layout_constraintTop_toTopOf="@id/avatarRing"
+            app:srcCompat="@drawable/ic_user_gray" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/badge"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:visibility="invisible"
+            android:padding="12dp"
+            android:background="@drawable/gold_badge_circle"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_cc_gold"
+            app:layout_constraintLeft_toRightOf="@id/avatar"
+            app:layout_constraintRight_toRightOf="@id/avatar"
+            app:layout_constraintBottom_toBottomOf="@id/avatar"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/displayName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Martin Cazares"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/mainBg"
+            app:layout_constraintRight_toRightOf="@id/mainBg"
+            app:layout_constraintTop_toBottomOf="@id/avatarRing"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/specialist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Software Developer"
+            android:textAllCaps="true"
+            android:textSize="11dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/displayName"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rankValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_marginRight="20dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:text="#1"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="35dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/middleAnchor" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rankLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:text="Rank"
+            android:includeFontPadding="false"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:alpha=".9"
+            app:layout_constraintRight_toRightOf="@id/rankValue"
+            app:layout_constraintLeft_toLeftOf="@id/rankValue"
+            app:layout_constraintTop_toBottomOf="@id/middleAnchor" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/scoreLabelDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text=":"
+            android:textColor="@color/smooth_black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/specialist" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/scoreLabel"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Score"
+            android:textColor="@color/smooth_black"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/scoreLabelDots"
+            app:layout_constraintRight_toLeftOf="@id/scoreLabelDots"
+            app:layout_constraintTop_toTopOf="@id/scoreLabelDots" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/scoreValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="300/450"
+            android:textColor="@color/smooth_black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/scoreLabelDots"
+            app:layout_constraintLeft_toRightOf="@id/scoreLabelDots"
+            app:layout_constraintTop_toTopOf="@id/scoreLabelDots" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/specialityDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text=":"
+            android:textColor="@color/smooth_black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scoreValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/specialityLabel"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Curso"
+            android:textColor="@color/smooth_black"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/specialityDots"
+            app:layout_constraintRight_toLeftOf="@id/specialityDots"
+            app:layout_constraintTop_toTopOf="@id/specialityDots" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/specialityValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Tronco Común"
+            android:textColor="@color/smooth_black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/specialityDots"
+            app:layout_constraintLeft_toRightOf="@id/specialityDots"
+            app:layout_constraintTop_toTopOf="@id/specialityDots" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/startedDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text=":"
+            android:textColor="@color/smooth_black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/specialityValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/startedLabel"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Fecha de Inicio"
+            android:textColor="@color/smooth_black"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/startedDots"
+            app:layout_constraintRight_toLeftOf="@id/startedDots"
+            app:layout_constraintTop_toTopOf="@id/startedDots" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/startedValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="20/11/2020"
+            android:textColor="@color/smooth_black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/startedDots"
+            app:layout_constraintLeft_toRightOf="@id/startedDots"
+            app:layout_constraintTop_toTopOf="@id/startedDots" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/emailDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:fontFamily="@font/prompt"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text=":"
+            android:textColor="@color/smooth_black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/startedValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/emailLabel"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Email"
+            android:textColor="@color/smooth_black"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/emailDots"
+            app:layout_constraintRight_toLeftOf="@id/emailDots"
+            app:layout_constraintTop_toTopOf="@id/emailDots" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/emailValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="jm.cazaresg@gmai.com"
+            android:textColor="@color/smooth_black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/emailDots"
+            app:layout_constraintLeft_toRightOf="@id/emailDots"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/emailDots" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/usernameDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:fontFamily="@font/prompt"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text=":"
+            android:textColor="@color/smooth_black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emailValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/usernameLabel"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Username"
+            android:textColor="@color/smooth_black"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/usernameDots"
+            app:layout_constraintRight_toLeftOf="@id/usernameDots"
+            app:layout_constraintTop_toTopOf="@id/usernameDots" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/usernameValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="magodeoz"
+            android:textColor="@color/smooth_black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/usernameDots"
+            app:layout_constraintLeft_toRightOf="@id/usernameDots"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/usernameDots" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

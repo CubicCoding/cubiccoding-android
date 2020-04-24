@@ -37,7 +37,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/leave_us_your_email_for_more_info"
-        android:textColor="@color/smooth_black"
+        android:textColor="@color/deep_gray"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -55,7 +55,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ccTellMeMoreEmail"
             style="@style/TextInputEditTextStyle"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:imeOptions="actionDone"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
