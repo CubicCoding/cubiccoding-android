@@ -14,7 +14,7 @@ import mx.cubiccoding.persistence.database.CubicCodingDB
 
 class GetTestBottomModel: BaseMVPModel() {
 
-    fun getTestQuestion(uuid: String, callback: GenericRequestListener<GetTestResponsePayload, Throwable>) {
+    fun getTestQuestion(uuid: String, callback: GenericRequestListener<String, Throwable>) {
         launch(Dispatchers.IO) {
             val question = CubicCodingDB.getDatabaseInstance().getQuestionDao().getQuestion(uuid)
             if (question?.isAnswered == true) {//Question is already answered in our records, notify user about this...

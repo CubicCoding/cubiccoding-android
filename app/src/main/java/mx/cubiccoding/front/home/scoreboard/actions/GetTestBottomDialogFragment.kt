@@ -74,10 +74,10 @@ class GetTestBottomDialogFragment : BottomSheetDialogFragment() {
         ccTestId.setText("")
     }
 
-    private fun handleGettingTestSucceeded(tesUuid: String) {
+    private fun handleGettingTestSucceeded(uuid: String) {
         progressDialog?.setOnDismissListener {
             val testIntent = Intent(context, TestActivity::class.java)
-            testIntent.putExtra(TestActivity.TEST_ID_EXTRA, tesUuid)
+            testIntent.putExtra(TestActivity.TEST_ID_EXTRA, uuid)
             activity?.startActivity(testIntent)
             dismissAllowingStateLoss()
         }
@@ -102,8 +102,8 @@ class GetTestBottomDialogFragment : BottomSheetDialogFragment() {
     }
 
     private class GetTestCallbackStub {
-        fun onSuccess(view: GetTestBottomDialogFragment, response: GetTestResponsePayload) {
-            view.handleGettingTestSucceeded(response.scoreTestUuid ?: "")
+        fun onSuccess(view: GetTestBottomDialogFragment, uuid: String) {
+            view.handleGettingTestSucceeded(uuid)
         }
 
         fun onFailed(view: GetTestBottomDialogFragment, error: Throwable) {

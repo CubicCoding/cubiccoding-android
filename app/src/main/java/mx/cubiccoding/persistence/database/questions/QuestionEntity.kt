@@ -23,6 +23,9 @@ data class QuestionEntity(
     @ColumnInfo(name = "answers")
     val answers: String?,
 
+    @ColumnInfo(name = "answered")
+    val answered: String?,
+
     @ColumnInfo(name = "maxScore")
     val maxScore: Int?,
 

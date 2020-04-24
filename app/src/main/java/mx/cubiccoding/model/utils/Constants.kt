@@ -25,7 +25,6 @@ class Constants {
         const val HTTP_RESOURCE_GONE  = 410
         const val HTTP_UNPROCESABLE_ENTITY  = 422
         const val AUTHORIZATON_HEADER = "Authorization"
-        const val CC_TOKEN_PREFIX = "Bearer "
         //================== HTTP Constants ==================
 
 

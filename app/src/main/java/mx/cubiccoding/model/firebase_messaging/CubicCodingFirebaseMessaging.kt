@@ -26,7 +26,7 @@ class CubicCodingFirebaseMessaging: FirebaseMessagingService() {
     override fun onMessageReceived(data: RemoteMessage) {
         super.onMessageReceived(data)
 
-        Timber.e("Track, Message Data: ${data.data}")
+        Timber.e("Track, Message Data: ${data.data["content"]}")
         Handler(Looper.getMainLooper()).post {
             showFancyToast(CubicCodingApplication.instance, data.data.toString())
         }

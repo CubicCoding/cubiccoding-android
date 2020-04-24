@@ -2,22 +2,20 @@ package mx.cubiccoding.model.networking.calls
 
 import androidx.annotation.WorkerThread
 import mx.cubiccoding.model.dtos.LoginRequestPayload
-import mx.cubiccoding.model.networking.GenericRequestListener
-import mx.cubiccoding.model.networking.RequestsManager
 import mx.cubiccoding.model.dtos.LoginResponsePayload
 import mx.cubiccoding.model.dtos.RegisterFirebaseTokenRequestPayload
 import mx.cubiccoding.model.dtos.SignupRequestPayload
 import mx.cubiccoding.model.firebase_messaging.FirebaseTokenUploader
 import mx.cubiccoding.model.networking.CubicCodingRequestException
+import mx.cubiccoding.model.networking.GenericRequestListener
 import mx.cubiccoding.model.networking.RequestErrorType
+import mx.cubiccoding.model.networking.RequestsManager
 import mx.cubiccoding.model.utils.Constants.Companion.ANDROID_DEVICE
 import mx.cubiccoding.model.utils.Constants.Companion.AUTHORIZATON_HEADER
-import mx.cubiccoding.model.utils.Constants.Companion.CC_TOKEN_PREFIX
 import mx.cubiccoding.persistence.preferences.UserPersistedData
 import okhttp3.ResponseBody
 import retrofit2.Response
 import timber.log.Timber
-import java.util.*
 
 object UserRequest {
 
@@ -111,8 +109,7 @@ object UserRequest {
         Timber.d("Track, Trying to register a firebasetoken with email: $email")
         return try {
             RequestsManager.cubicCodingManagerApi.registerFirebaseToken(
-                RegisterFirebaseTokenRequestPayload(token, email, ANDROID_DEVICE),
-                Collections.singletonMap(AUTHORIZATON_HEADER, CC_TOKEN_PREFIX + UserPersistedData.ccToken))
+                RegisterFirebaseTokenRequestPayload(token, email, ANDROID_DEVICE))
                 .execute()
         } catch (e: Exception) {
             Timber.e(e, "Error trying to register firebase token...")
