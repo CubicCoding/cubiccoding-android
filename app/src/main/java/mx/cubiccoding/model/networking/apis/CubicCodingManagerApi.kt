@@ -21,7 +21,7 @@ interface CubicCodingManagerApi {
     fun getQuestion(@Path("uuid" ) uuid: String, @HeaderMap headers: Map<String, String> = RequestsManager.getAuthorizationHeader()): Call<GetTestResponsePayload>
 
     @POST("/api/scoreboard/score-answers")
-    fun uploadAnswer(uploadAnswerRequest: UploadAnswerRequestPayload): Call<ResponseBody>
+    fun uploadAnswer(@Body uploadAnswerRequest: UploadAnswerRequestPayload, @HeaderMap headers: Map<String, String> = RequestsManager.getAuthorizationHeader()): Call<ResponseBody>
 
     @POST("/api/push-notifications")
     fun registerFirebaseToken(@Body uploadAnswerRequest: RegisterFirebaseTokenRequestPayload, @HeaderMap headers: Map<String, String> = RequestsManager.getAuthorizationHeader()): Call<ResponseBody>

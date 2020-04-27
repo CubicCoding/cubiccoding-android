@@ -8,6 +8,9 @@ import mx.cubiccoding.model.networking.GenericRequestListener
 import mx.cubiccoding.model.networking.RequestsManager
 import mx.cubiccoding.model.networking.CubicCodingRequestException
 import mx.cubiccoding.model.networking.RequestErrorType
+import mx.cubiccoding.model.utils.Constants.Companion.HTTP_CONFLICT
+import mx.cubiccoding.model.utils.Constants.Companion.HTTP_GONE
+import mx.cubiccoding.model.utils.Constants.Companion.HTTP_UNAUTHORIZED
 import mx.cubiccoding.persistence.database.CubicCodingDB
 import mx.cubiccoding.persistence.database.questions.QuestionEntity
 import mx.cubiccoding.persistence.preferences.ScoreboardMetadata
@@ -183,26 +186,25 @@ object ScoreboardRequest {
     }
 
     @WorkerThread
-    fun uploadAnswer(testUuid: String, answer: String): UploadAnswerStatus {
+    fun uploadAnswer(testUuid: String, answer: List<Int>): UploadAnswerResult {
         try {
-
             val response = RequestsManager.cubicCodingManagerApi.uploadAnswer(UploadAnswerRequestPayload(testUuid, answer)).execute()
             return when {
                 response.isSuccessful -> {
-                    UploadAnswerStatus.SUCCESS
+                    UploadAnswerResult(UploadAnswerStatus.SUCCESS, response.code())
                 }
                 else -> {
                     val error = CubicCodingRequestException("UploadAnswer request not successful", RequestErrorType.UNSUCCESS, response.code())
                     Timber.e(error, "ERROR")
                     when (response.code()) {
-                        401, 410, 422 -> UploadAnswerStatus.CANCEL_TASK//These codes are specified in the API documentation as invalid states that we won't be able to recover from, hence cancel task...
-                        else -> UploadAnswerStatus.REQUIRES_RETRY //If we didn't get success for any other reason, then retry...
+                        HTTP_GONE, HTTP_UNAUTHORIZED, HTTP_CONFLICT -> UploadAnswerResult(UploadAnswerStatus.CANCEL_TASK, response.code())//These codes are specified in the API documentation as invalid states that we won't be able to recover from, hence cancel task...
+                        else -> UploadAnswerResult(UploadAnswerStatus.REQUIRES_RETRY, response.code()) //If we didn't get success for any other reason, then retry...
                     }
                 }
             }
         } catch (e: Exception) {
             Timber.e(e, "ERROR")
-            return UploadAnswerStatus.REQUIRES_RETRY
+            return UploadAnswerResult(UploadAnswerStatus.REQUIRES_RETRY, -1)
         }
     }
     enum class UploadAnswerStatus {
@@ -210,4 +212,5 @@ object ScoreboardRequest {
         REQUIRES_RETRY,
         CANCEL_TASK
     }
+    data class UploadAnswerResult(val status: UploadAnswerStatus, val code: Int)
 }

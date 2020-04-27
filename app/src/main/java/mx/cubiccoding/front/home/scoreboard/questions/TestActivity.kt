@@ -2,6 +2,7 @@ package mx.cubiccoding.front.home.scoreboard.questions
 
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -92,10 +93,29 @@ class TestActivity: AppCompatActivity() {
                 optionsSelected.forEach { answeredArray.put(it) }
                 questionDao.updateAnswered(testUuid, answeredArray.toString())
 
-                val response = ScoreboardRequest.uploadAnswer(testUuid, answers)
-                if (response == ScoreboardRequest.UploadAnswerStatus.SUCCESS) {//Only if immediate upload is successful then cancel the enqueued work, otherwise move on...
-                    Timber.e("Track, Immediate upload answer worked, cancel the pending task...")
-                    workManager.cancelWorkById(worker.id)
+                val response = ScoreboardRequest.uploadAnswer(testUuid, optionsSelected)
+                when (response.status) {
+                    ScoreboardRequest.UploadAnswerStatus.SUCCESS -> {
+                        workManager.cancelWorkById(worker.id)
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            showFancyToast(this@TestActivity, getString(R.string.successfully_loaded_score), Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM)
+                        }
+                    }
+                    ScoreboardRequest.UploadAnswerStatus.CANCEL_TASK -> {
+                        workManager.cancelWorkById(worker.id)
+                        val message = when(response.code) {
+                            Constants.HTTP_GONE -> getString(R.string.this_question_has_expired)
+                            Constants.HTTP_UNAUTHORIZED -> getString(R.string.not_auth_to_answer)
+                            Constants.HTTP_CONFLICT -> getString(R.string.question_already_answered)
+                            else -> getString(R.string.error_while_answering)
+                        }
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            showFancyToast(this@TestActivity, message, Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM)
+                        }
+                    }
+                    ScoreboardRequest.UploadAnswerStatus.REQUIRES_RETRY -> {
+                        Timber.e("Track, let the worker manager keep going to retry...")
+                    }
                 }
             }
         }

@@ -1,10 +1,15 @@
 package mx.cubiccoding.front.home
 
 import android.app.Activity
+import android.content.Intent
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import mx.cubiccoding.R
+import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
 import mx.cubiccoding.front.mvp.BaseMVPPresenter
+import mx.cubiccoding.front.utils.IntentUtils
 import mx.cubiccoding.front.utils.isActivityAlive
+import timber.log.Timber
 
 class HomePresenter: BaseMVPPresenter<HomeViewContract, HomeModel>() {
 
@@ -29,6 +34,28 @@ class HomePresenter: BaseMVPPresenter<HomeViewContract, HomeModel>() {
         lastSelectedMenuItem = selectedItem
 
         return true
+    }
+
+    fun presentResume(intent: Intent?) {
+        if (intent != null && IntentUtils.isNotLaunchedFromHistory(intent)) {
+            when(intent.action) {
+                Home.OPEN_BOTTOM_QUESTION_FRAGMENT_ACTION -> {
+                    try {
+                        val uuid =
+                            intent.getStringExtra(GetTestBottomDialogFragment.TEST_UUID_PRE_POPULATED_KEY)
+                                ?: ""
+                        if (uuid.isNotEmpty()) {
+                            viewContract.showQuestionBottomFragment(uuid)
+                        } else {
+                            Timber.e("Track, the uuid passaed in the deeplink for opening question is empty....")
+                        }
+                    }finally {
+                        intent.action = ""
+                        intent.putExtra(GetTestBottomDialogFragment.TEST_UUID_PRE_POPULATED_KEY, "")//Always cleanup after getting the value...
+                    }
+                }
+            }
+        }
     }
 
     private fun shouldIgnoreNavigationAction(currentlySelectedItem: Int): Boolean {

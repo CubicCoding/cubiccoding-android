@@ -1,15 +1,14 @@
 package mx.cubiccoding.model.firebase_messaging
 
-import android.os.Handler
-import android.os.Looper
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import mx.cubiccoding.front.CubicCodingApplication
-import mx.cubiccoding.front.utils.views.showFancyToast
+import mx.cubiccoding.front.notifications.FirebaseNotificationHandler
 import mx.cubiccoding.persistence.preferences.UserPersistedData
 import timber.log.Timber
 
 class CubicCodingFirebaseMessaging: FirebaseMessagingService() {
+
+    val firebaseNotificationHandler by lazy { FirebaseNotificationHandler() }
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -25,10 +24,6 @@ class CubicCodingFirebaseMessaging: FirebaseMessagingService() {
 
     override fun onMessageReceived(data: RemoteMessage) {
         super.onMessageReceived(data)
-
-        Timber.e("Track, Message Data: ${data.data["content"]}")
-        Handler(Looper.getMainLooper()).post {
-            showFancyToast(CubicCodingApplication.instance, data.data.toString())
-        }
+        firebaseNotificationHandler.handlePushPayload(data.data)
     }
 }

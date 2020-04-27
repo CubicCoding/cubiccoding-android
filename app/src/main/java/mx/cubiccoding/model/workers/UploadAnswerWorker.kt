@@ -12,12 +12,12 @@ class UploadAnswerWorker(context: Context, workerParams: WorkerParameters): Work
     override fun doWork(): Result {
         Timber.e("Track, Started UploadAnswer WORK!!!")
         val testUuid = inputData.getString(Constants.TEST_UUID_WORKER_INPUT) ?: ""
-        val answers = inputData.getString(Constants.ANSWERS_WORKER_INPUT) ?: ""
+        val answers = inputData.getIntArray(Constants.ANSWERS_WORKER_INPUT) ?: intArrayOf()
 
         return if (testUuid.isEmpty() || answers.isEmpty()) {//This is just defensive, we should never get here because if we don't have the right info we should not start the manager...
             Result.failure()
         } else {
-            when (ScoreboardRequest.uploadAnswer(testUuid, answers)) {
+            when (ScoreboardRequest.uploadAnswer(testUuid, answers.toList()).status) {
                 ScoreboardRequest.UploadAnswerStatus.SUCCESS ->  {
                     Timber.e("Track, UploadAnswer WORK: Success")
                     Result.success()

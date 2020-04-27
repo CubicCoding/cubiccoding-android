@@ -20,5 +20,5 @@ data class GetTestResponsePayload(val uuid: String?, val label: String?, val que
 //REQUEST PAYLOADS
 data class SignupRequestPayload(val email: String, val username: String, val password: String)
 data class LoginRequestPayload(val username: String, val password: String)
-data class UploadAnswerRequestPayload(val scoreTestUuid: String, val userAnswers: String)
+data class UploadAnswerRequestPayload(val scoreTestUuid: String, val userAnswers: List<Int>)
 data class RegisterFirebaseTokenRequestPayload(val token: String, val email: String, val device: String)

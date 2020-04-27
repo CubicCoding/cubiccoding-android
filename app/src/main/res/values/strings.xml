@@ -70,6 +70,10 @@
     <string name="received_score_value">Score Obtenido: %s</string>
     <string name="max_score_value">Max Score: %s</string>
     <string name="test_id_value">ID: %s</string>
-    <string name="question_already_answered">Esta pregunta ya fue contestada!</string>
+    <string name="question_already_answered">Ya contestaste esta pregunta</string>
     <string name="help">Ayuda</string>
+    <string name="not_auth_to_answer">Sin autorización para contestar</string>
+    <string name="this_question_has_expired">Esta pregunta ya expiró</string>
+    <string name="error_while_answering">Error al contestar</string>
+    <string name="successfully_loaded_score">Tu score fue cargado con éxito</string>
 </resources>
