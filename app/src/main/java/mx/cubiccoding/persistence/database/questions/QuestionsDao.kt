@@ -14,6 +14,9 @@ interface QuestionsDao {
     @Query("UPDATE questions SET isAnswered = :isAnswered WHERE testUuid = :testUuid")
     fun updateIsAnswered(testUuid: String, isAnswered: Boolean)
 
+    @Query("UPDATE questions SET answered = :answered WHERE testUuid = :testUuid")
+    fun updateAnswered(testUuid: String, answered: String)
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(questions: QuestionEntity)
 }

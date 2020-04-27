@@ -1,5 +1,6 @@
 package mx.cubiccoding.front.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -8,10 +9,16 @@ import mx.cubiccoding.R
 import mx.cubiccoding.front.home.news.HelpFragment
 import mx.cubiccoding.front.home.profile.ProfileFragment
 import mx.cubiccoding.front.home.scoreboard.ScoreboardFragment
+import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
+import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment.Companion.TEST_UUID_PRE_POPULATED_KEY
 import timber.log.Timber
 
 
 class Home : AppCompatActivity(), HomeViewContract {
+
+    companion object {
+        const val OPEN_BOTTOM_QUESTION_FRAGMENT_ACTION = "open.bottom.question.fragment.action"
+    }
 
     private val presenter by lazy { HomePresenter() }
 
@@ -26,6 +33,17 @@ class Home : AppCompatActivity(), HomeViewContract {
     override fun onDestroy() {
         super.onDestroy()
         presenter.terminate()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        presenter.presentResume(intent)
     }
 
     private fun setupViews() {
@@ -75,4 +93,11 @@ class Home : AppCompatActivity(), HomeViewContract {
         }
     }
 
+    override fun showQuestionBottomFragment(uuid: String) {
+        val arg = with(Bundle()) {
+            putString(TEST_UUID_PRE_POPULATED_KEY, uuid)
+            this
+        }
+        GetTestBottomDialogFragment.newInstance(arg).show(supportFragmentManager, GetTestBottomDialogFragment.TAG)
+    }
 }

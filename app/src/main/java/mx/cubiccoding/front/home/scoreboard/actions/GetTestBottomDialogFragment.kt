@@ -24,7 +24,9 @@ class GetTestBottomDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "get.test.bottom.dialog.fragment"
+        const val TEST_UUID_PRE_POPULATED_KEY = "test.uuid.pre.populated.key"
         fun newInstance() = GetTestBottomDialogFragment()
+        fun newInstance(args: Bundle) = GetTestBottomDialogFragment().apply { arguments = args }
     }
 
     override fun onCreateView(
@@ -47,6 +49,10 @@ class GetTestBottomDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupViews() {
+        val prepopulatedUuid = arguments?.getString(TEST_UUID_PRE_POPULATED_KEY) ?: ""
+        if (prepopulatedUuid.isNotEmpty()) {//Only prepopulate this value if there is something to prepopulate it with...
+            ccTestId.setText(prepopulatedUuid)
+        }
         ccTestId.setOnEditorActionListener { _, action, _ ->
             if (action == EditorInfo.IME_ACTION_DONE) { downloadQuickTest() }
             false
@@ -74,10 +80,10 @@ class GetTestBottomDialogFragment : BottomSheetDialogFragment() {
         ccTestId.setText("")
     }
 
-    private fun handleGettingTestSucceeded(tesUuid: String) {
+    private fun handleGettingTestSucceeded(uuid: String) {
         progressDialog?.setOnDismissListener {
             val testIntent = Intent(context, TestActivity::class.java)
-            testIntent.putExtra(TestActivity.TEST_ID_EXTRA, tesUuid)
+            testIntent.putExtra(TestActivity.TEST_ID_EXTRA, uuid)
             activity?.startActivity(testIntent)
             dismissAllowingStateLoss()
         }
@@ -102,8 +108,8 @@ class GetTestBottomDialogFragment : BottomSheetDialogFragment() {
     }
 
     private class GetTestCallbackStub {
-        fun onSuccess(view: GetTestBottomDialogFragment, response: GetTestResponsePayload) {
-            view.handleGettingTestSucceeded(response.scoreTestUuid ?: "")
+        fun onSuccess(view: GetTestBottomDialogFragment, uuid: String) {
+            view.handleGettingTestSucceeded(uuid)
         }
 
         fun onFailed(view: GetTestBottomDialogFragment, error: Throwable) {

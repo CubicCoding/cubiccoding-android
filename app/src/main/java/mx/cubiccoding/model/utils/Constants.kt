@@ -22,10 +22,12 @@ class Constants {
         const val CUBICCODING_MANAGER_URL = "http://192.168.0.14:8080/"
         const val HTTP_WAIT_TIME_IN_SECS = 30L
         const val HTTP_RESOURCE_NOT_FOUND = 404
-        const val HTTP_RESOURCE_GONE  = 410
-        const val HTTP_UNPROCESABLE_ENTITY  = 422
+        const val HTTP_RESOURCE_GONE = 410
+        const val HTTP_UNPROCESABLE_ENTITY = 422
+        const val HTTP_GONE = 410
+        const val HTTP_UNAUTHORIZED = 401
+        const val HTTP_CONFLICT = 409
         const val AUTHORIZATON_HEADER = "Authorization"
-        const val CC_TOKEN_PREFIX = "Bearer "
         //================== HTTP Constants ==================
 
 
@@ -46,5 +48,19 @@ class Constants {
         const val UPLOAD_ANSWER_DELAY_IN_MS = 90000L
         const val ANDROID_DEVICE = "android"
         //================== Miscellaneous ==================
+
+
+        //================== Notifications ==================
+        const val PAYLOAD_CONTENT_VALUE = "content"
+        const val PAYLOAD_TYPE_PROPERTY = "type"
+        const val PAYLOAD_TITLE_PROPERTY = "title"
+        const val PAYLOAD_ACTION_PROPERTY = "action"
+        const val PAYLOAD_MESSAGE_PROPERTY = "message"
+        const val PAYLOAD_DATA_PROPERTY = "data"
+
+        const val NOTIFICATION_TYPE_VALUE = "notification"
+        const val COMMAND_TYPE_VALUE = "command"
+        const val NEW_SCORE_TEST_ACTION_VALUE = "new_score"
+        //================== Notifications ==================
     }
 }

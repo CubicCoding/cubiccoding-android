@@ -8,11 +8,15 @@ import mx.cubiccoding.model.networking.GenericRequestListener
 import mx.cubiccoding.model.networking.RequestsManager
 import mx.cubiccoding.model.networking.CubicCodingRequestException
 import mx.cubiccoding.model.networking.RequestErrorType
+import mx.cubiccoding.model.utils.Constants.Companion.HTTP_CONFLICT
+import mx.cubiccoding.model.utils.Constants.Companion.HTTP_GONE
+import mx.cubiccoding.model.utils.Constants.Companion.HTTP_UNAUTHORIZED
 import mx.cubiccoding.persistence.database.CubicCodingDB
 import mx.cubiccoding.persistence.database.questions.QuestionEntity
 import mx.cubiccoding.persistence.preferences.ScoreboardMetadata
 import org.json.JSONArray
 import timber.log.Timber
+import java.util.*
 
 object ScoreboardRequest {
 
@@ -139,90 +143,68 @@ object ScoreboardRequest {
     }
 
     @WorkerThread
-    fun getTestQuestion(uuid: String, callback: GenericRequestListener<GetTestResponsePayload, Throwable>) {
+    fun getTestQuestion(uuid: String, callback: GenericRequestListener<String, Throwable>) {
         try {
-            //TODO: Add call to get the quick test(REMOVE FAKE DELAY)...
-            Thread.sleep(3000)
 
-            //TODO: Add the real request to api.getTestQuestion
-            val result = GetTestResponsePayload(
-                "sdfsdf",
-                "1_1_Demo_Variables_Scope",
-                "Cual es el output del codigo en el pizarron",
-                "question",
-                listOf(
-                    "El codigo no compila",
-                    "El codigo truena en la linea 3",
-                    "Funciona con output: 20",
-                    "Funciona con output: 30"
-                ),
-                listOf(0, 2),
-                20
-            )
+            val questions = CubicCodingDB.getDatabaseInstance().getQuestionDao().getQuestion(uuid)
+            if (questions != null) {
+                callback.onResult(questions.testUuid)
+                Timber.e("Track, Question found in local db...")
+                return
+            }// Move on with network call if not found...
 
-            //Always store the questions into a table before firing the callback...
-            val optionsJsonArray = JSONArray()
-            result.options.forEach {
-                optionsJsonArray.put(it)
+            val response = RequestsManager.cubicCodingManagerApi.getQuestion(uuid).execute()
+            val testQuestions = response.body()
+            if (response.isSuccessful && testQuestions != null) {
+                //Always store the questions into a table before firing the callback...
+                val optionsJsonArray = JSONArray()
+                testQuestions.options.forEach {
+                    optionsJsonArray.put(it)
+                }
+                val optionsString = optionsJsonArray.toString()
+                val answersJsonArray = JSONArray()
+                testQuestions.answers.forEach {
+                    answersJsonArray.put(it)
+                }
+                val answersString = answersJsonArray.toString()
+
+                Timber.e("Storing into db options: $optionsString, answers: $answersString")
+                CubicCodingDB.getDatabaseInstance().getQuestionDao().insert(QuestionEntity(testQuestions.uuid ?: "", testQuestions.label, testQuestions.questionTitle, optionsString, answersString, "", testQuestions.maxScore))
+
+                callback.onResult(testQuestions.uuid)
+            } else {
+                throw CubicCodingRequestException("GetQuestion request not successful", RequestErrorType.UNSUCCESS, response.code())
             }
-            val optionsString = optionsJsonArray.toString()
-            val answersJsonArray = JSONArray()
-            result.answers.forEach {
-                answersJsonArray.put(it)
-            }
-            val answersString = answersJsonArray.toString()
-
-            Timber.e("Storing into db options: $optionsString, answers: $answersString")
-            CubicCodingDB.getDatabaseInstance().getQuestionDao().insert(
-                QuestionEntity(
-                    result.scoreTestUuid ?: "",
-                    result.label,
-                    result.questionTitle,
-                    optionsString,
-                    answersString,
-                    result.maxScore
-                )
-            )
-            callback.onResult(result)
         } catch (e: Exception) {
             Timber.e(e, "ERROR")
             if (e is CubicCodingRequestException) {
                 callback.onFail(e)
             } else {//Turn it into a CubicCodingRequestException
-                callback.onFail(
-                    CubicCodingRequestException(
-                        "VerifyVoucherIsValid unknown error",
-                        RequestErrorType.GENERIC
-                    )
-                )
+                callback.onFail(CubicCodingRequestException("GetQuestion unknown error", RequestErrorType.GENERIC))
             }
         }
     }
 
     @WorkerThread
-    fun uploadAnswer(testUuid: String, answer: String): UploadAnswerStatus {
+    fun uploadAnswer(testUuid: String, answer: List<Int>): UploadAnswerResult {
         try {
-
-            //TODO: Fake success answer
-            if ( 1 == 1 ) return UploadAnswerStatus.SUCCESS
-
             val response = RequestsManager.cubicCodingManagerApi.uploadAnswer(UploadAnswerRequestPayload(testUuid, answer)).execute()
             return when {
                 response.isSuccessful -> {
-                    UploadAnswerStatus.SUCCESS
+                    UploadAnswerResult(UploadAnswerStatus.SUCCESS, response.code())
                 }
                 else -> {
                     val error = CubicCodingRequestException("UploadAnswer request not successful", RequestErrorType.UNSUCCESS, response.code())
                     Timber.e(error, "ERROR")
                     when (response.code()) {
-                        401, 410, 422 -> UploadAnswerStatus.CANCEL_TASK//These codes are specified in the API documentation as invalid states that we won't be able to recover from, hence cancel task...
-                        else -> UploadAnswerStatus.REQUIRES_RETRY //If we didn't get success for any other reason, then retry...
+                        HTTP_GONE, HTTP_UNAUTHORIZED, HTTP_CONFLICT -> UploadAnswerResult(UploadAnswerStatus.CANCEL_TASK, response.code())//These codes are specified in the API documentation as invalid states that we won't be able to recover from, hence cancel task...
+                        else -> UploadAnswerResult(UploadAnswerStatus.REQUIRES_RETRY, response.code()) //If we didn't get success for any other reason, then retry...
                     }
                 }
             }
         } catch (e: Exception) {
             Timber.e(e, "ERROR")
-            return UploadAnswerStatus.REQUIRES_RETRY
+            return UploadAnswerResult(UploadAnswerStatus.REQUIRES_RETRY, -1)
         }
     }
     enum class UploadAnswerStatus {
@@ -230,4 +212,5 @@ object ScoreboardRequest {
         REQUIRES_RETRY,
         CANCEL_TASK
     }
+    data class UploadAnswerResult(val status: UploadAnswerStatus, val code: Int)
 }
