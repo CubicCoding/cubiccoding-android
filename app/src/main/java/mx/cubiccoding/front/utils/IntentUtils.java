@@ -12,11 +12,18 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
 import mx.cubiccoding.R;
+import mx.cubiccoding.front.home.Home;
 import timber.log.Timber;
 
 import static mx.cubiccoding.front.utils.NavigatorWebLinks.PARAM_WEB_URL;
 
 public class IntentUtils {
+
+    public static void launchHomeActivity(Context context) {
+        Intent intent = new Intent(context, Home.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 
     public static boolean isNotLaunchedFromHistory(@Nullable Intent intent) {
         if (intent != null) {

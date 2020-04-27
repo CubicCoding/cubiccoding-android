@@ -1,12 +1,21 @@
 package mx.cubiccoding.model.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
 import mx.cubiccoding.R
-import mx.cubiccoding.front.CubicCodingApplication
-import mx.cubiccoding.model.networking.calls.CubicCodingRequestException
+import mx.cubiccoding.model.networking.CubicCodingRequestException
+import java.text.SimpleDateFormat
+import java.util.*
+
+@SuppressLint("ConstantLocale")
+val defaultDateFormatter = SimpleDateFormat("dd'/'MM'/'yyyy', 'hh:mm aaa", Locale.getDefault())
+@Synchronized
+fun getDefaultFormattedDateFromMillis(milliseconds: Long): String {
+    return defaultDateFormatter.format(Date(milliseconds)).capitalize()
+}
 
 @Suppress("DEPRECATION")
 fun fromHtml(html: String): Spanned {
@@ -25,4 +34,14 @@ fun getErrorMessageForVoucherVerification(context: Context, error: Throwable): S
             else -> context.getString(R.string.invalid_voucher)
         }
     } else context.getString(R.string.error_processing_voucher)
+}
+
+fun getErrorMessageForRegistration(context: Context, error: Throwable): String {
+    return if (error is CubicCodingRequestException) {
+        when (error.httpStatusCode) {
+            Constants.HTTP_UNPROCESABLE_ENTITY -> context.getString(R.string.user_already_exists)
+            Constants.HTTP_RESOURCE_GONE -> context.getString(R.string.user_already_exists)
+            else -> context.getString(R.string.error_during_register)
+        }
+    } else context.getString(R.string.error_during_register)
 }

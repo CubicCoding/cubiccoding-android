@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile"
+        android:checked="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_scoreboard"
+        android:enabled="true"
+        android:icon="@drawable/ic_trophy"
+        android:title="@string/scoreboard"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/item_help"
+        android:enabled="true"
+        android:icon="@drawable/ic_help"
+        android:title="@string/help"
+        app:showAsAction="always" />
+
+</menu>

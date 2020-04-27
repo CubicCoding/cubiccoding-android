@@ -5,11 +5,11 @@ import kotlinx.coroutines.launch
 import mx.cubiccoding.front.mvp.BaseMVPModel
 import mx.cubiccoding.model.networking.GenericRequestListener
 import mx.cubiccoding.model.networking.calls.VoucherRequest
-import mx.cubiccoding.model.dtos.GetVoucherPayload
+import mx.cubiccoding.model.dtos.GetVoucherResponsePayload
 
 class VoucherBottomModel: BaseMVPModel() {
 
-    fun verifyVoucher(uuid: String, callback: GenericRequestListener<GetVoucherPayload, Throwable>) {
+    fun verifyVoucher(uuid: String, callback: GenericRequestListener<GetVoucherResponsePayload, Throwable>) {
         launch(Dispatchers.IO) { VoucherRequest.verifyVoucherIsValid(uuid, callback) }
     }
 }

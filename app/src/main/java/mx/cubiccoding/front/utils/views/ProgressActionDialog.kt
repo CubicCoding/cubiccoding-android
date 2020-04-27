@@ -10,8 +10,9 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import kotlinx.android.synthetic.main.progress_dialog.*
 import mx.cubiccoding.R
+import mx.cubiccoding.front.utils.getCachedColor
 
-class ProgressActionDialog(context: Context, private val title: String, @DrawableRes val icon: Int = R.drawable.ic_cc_no_bg): Dialog(context) {
+class ProgressActionDialog(context: Context, private val title: String, @DrawableRes val iconId: Int = R.drawable.ic_cc_no_bg): Dialog(context) {
 
     companion object {
         const val DELAY_DISMISS_IN_MS = 1000L
@@ -24,8 +25,7 @@ class ProgressActionDialog(context: Context, private val title: String, @Drawabl
 
         setContentView(R.layout.progress_dialog)
         alertDialogTitle?.text = title
-        progressIcon.setImageResource(icon)
-        progressIcon.imageTintMode = PorterDuff.Mode.SRC_IN
+        updateIcon(iconId)
     }
 
     override fun show() {
@@ -43,6 +43,18 @@ class ProgressActionDialog(context: Context, private val title: String, @Drawabl
             }, DELAY_DISMISS_IN_MS)
         } else {
             dismiss()
+        }
+    }
+
+    fun updateTitle(title: String) {
+        alertDialogTitle.text = title
+    }
+
+    fun updateIcon(@DrawableRes iconId: Int) {
+        progressIcon.setImageResource(iconId)
+        with(progressIcon.drawable.mutate()) {
+            setTintMode(PorterDuff.Mode.SRC_IN)
+            setTint(getCachedColor(R.color.colorAccent))
         }
     }
 

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/profileCCLogo"
+        android:layout_width="384dp"
+        android:layout_height="168dp"
+        android:padding="12dp"
+        android:src="@drawable/cc_banner"
+        android:alpha=".15"
+        app:layout_constraintVertical_bias=".05"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/testId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_edge_space"
+        android:layout_marginLeft="@dimen/common_edge_space"
+        android:fontFamily="@font/prompt"
+        tools:text="ID: 56d87"
+        android:textSize="12sp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/light_gray_2"
+        android:includeFontPadding="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/maxScoreLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/common_edge_space"
+        android:fontFamily="@font/prompt"
+        tools:text="1_1_Variables"
+        android:textSize="12sp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/light_gray_2"
+        android:includeFontPadding="false"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/testId" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/scoreAwardedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/common_edge_space"
+        android:fontFamily="@font/prompt"
+        tools:text="1_1_Variables"
+        android:textSize="12sp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        android:includeFontPadding="false"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/maxScoreLabel" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/uploadAnswers"
+        style="@style/ActionButton"
+        android:text="@string/answer"
+        android:layout_marginBottom="@dimen/common_edge_space"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/optionsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/common_edge_space"
+        app:layout_constraintBottom_toTopOf="@id/uploadAnswers"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/questionContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:fontFamily="@font/prompt"
+        tools:text="Cual de las siguientes respuestas es correcta para la pregunta que se encuentra en el pizarron?"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:scrollbars="vertical"
+        app:autoSizeMaxTextSize="28sp"
+        app:autoSizeMinTextSize="13sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scoreAwardedLabel"
+        app:layout_constraintBottom_toTopOf="@id/optionsRecyclerView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

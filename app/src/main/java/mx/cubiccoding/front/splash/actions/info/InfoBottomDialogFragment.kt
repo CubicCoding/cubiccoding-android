@@ -73,7 +73,7 @@ class InfoBottomDialogFragment : BottomSheetDialogFragment(){
     }
 
     private fun handleRequestSucceeded(response: BasicResponsePayload) {
-        dismiss()
+        dismissAllowingStateLoss()
         progressDialog?.dismiss(true)
 
         showFancyToast(context, getString(R.string.email_sent), Gravity.CENTER)

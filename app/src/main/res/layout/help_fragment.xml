@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_smoke"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/banner"
+            android:layout_width="384dp"
+            android:layout_height="168dp"
+            android:layout_gravity="center_horizontal"
+            android:padding="30dp"
+            android:src="@drawable/cc_banner" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/infoHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_edge_space"
+            android:layout_marginRight="@dimen/common_edge_space"
+            android:fontFamily="@font/prompt"
+            android:gravity="center_horizontal"
+            android:text="El equipo de CubicCoding está para ayudarte. Si tienes alguna pregunta o aclaración no dudes en ponerte en contacto con nostros."
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <!--    Card Aaron-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="@dimen/common_edge_space"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@id/infoHeader">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/darkBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@color/colorPrimaryDeepDark"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/avatarRing"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/white_circle"
+                    android:backgroundTint="@color/white_smoke"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/aaronAvatar"
+                    android:layout_width="118dp"
+                    android:layout_height="118dp"
+                    android:background="@drawable/white_circle"
+                    app:layout_constraintBottom_toBottomOf="@id/avatarRing"
+                    app:layout_constraintLeft_toLeftOf="@id/avatarRing"
+                    app:layout_constraintRight_toRightOf="@id/avatarRing"
+                    app:layout_constraintTop_toTopOf="@id/avatarRing"
+                    app:srcCompat="@drawable/ic_user_gray" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/aaronDisplayName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/prompt"
+                    android:gravity="left"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="Aaron Arce"
+                    android:textColor="@color/white"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/avatarRing"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/avatarRing" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/aaronProfession"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/prompt"
+                    android:gravity="left"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="SOFTWARE ENGINEER"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/avatarRing"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/aaronDisplayName" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/aaronEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:autoLink="email"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/prompt"
+                    android:gravity="left"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textSize="11dp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/avatarRing"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/darkBg" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/aaronWhatsapp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="10dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_whatsapp"
+                    app:layout_constraintTop_toBottomOf="@id/aaronEmail"
+                    app:layout_constraintLeft_toRightOf="@id/avatarRing"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/aaronCall"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_call"
+                    app:layout_constraintTop_toBottomOf="@id/aaronEmail"
+                    app:layout_constraintLeft_toRightOf="@id/aaronWhatsapp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!--    Card Martin-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="@dimen/common_edge_space"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@id/infoHeader">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/martinDarkBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@color/colorPrimaryDeepDark"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/martinAvatarRing"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/white_circle"
+                    android:backgroundTint="@color/white_smoke"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/martinAvatar"
+                    android:layout_width="118dp"
+                    android:layout_height="118dp"
+                    android:background="@drawable/white_circle"
+                    app:layout_constraintBottom_toBottomOf="@id/martinAvatarRing"
+                    app:layout_constraintLeft_toLeftOf="@id/martinAvatarRing"
+                    app:layout_constraintRight_toRightOf="@id/martinAvatarRing"
+                    app:layout_constraintTop_toTopOf="@id/martinAvatarRing"
+                    app:srcCompat="@drawable/ic_user_gray" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/martinDisplayName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/prompt"
+                    android:gravity="left"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="Martin Cazares"
+                    android:textColor="@color/white"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/martinAvatarRing"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/martinAvatarRing" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/martinProfession"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/prompt"
+                    android:gravity="left"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="ANDROID ENGINEER"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/martinAvatarRing"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/martinDisplayName" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/martinEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:autoLink="email"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/prompt"
+                    android:gravity="left"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textSize="11dp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/martinAvatarRing"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/martinDarkBg" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/martinWhatsapp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="10dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_whatsapp"
+                    app:layout_constraintTop_toBottomOf="@id/martinEmail"
+                    app:layout_constraintLeft_toRightOf="@id/martinAvatarRing"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/martinCall"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_call"
+                    app:layout_constraintTop_toBottomOf="@id/martinEmail"
+                    app:layout_constraintLeft_toRightOf="@id/martinWhatsapp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/slackCommunity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="center_horizontal"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Unete a la comunidad Slack"
+            android:textSize="19sp"
+            android:textStyle="bold"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/slackJoinLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:gravity="center_horizontal"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="https://join.slack.com/t/cubiccoding/shared_invite/zt-dizmwuk7-SV64t8UMderksHbWiZZGPw"
+            android:textSize="10sp"
+            android:autoLink="web"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -2,12 +2,15 @@ package mx.cubiccoding.model.networking
 
 import mx.cubiccoding.model.networking.apis.CubicCodingMXApi
 import mx.cubiccoding.model.networking.apis.CubicCodingManagerApi
+import mx.cubiccoding.model.utils.Constants
 import mx.cubiccoding.model.utils.Constants.Companion.CUBICCODING_MANAGER_URL
 import mx.cubiccoding.model.utils.Constants.Companion.CUBICCODING_MX_URL
 import mx.cubiccoding.model.utils.Constants.Companion.HTTP_WAIT_TIME_IN_SECS
+import mx.cubiccoding.persistence.preferences.UserPersistedData
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 object RequestsManager {
@@ -49,4 +52,6 @@ object RequestsManager {
             build()
         }.create(CubicCodingManagerApi::class.java)
     }
+
+    fun getAuthorizationHeader() = Collections.singletonMap(Constants.AUTHORIZATON_HEADER, UserPersistedData.ccToken)
 }

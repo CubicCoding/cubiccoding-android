@@ -30,6 +30,20 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".front.home.Home"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+        
+        <activity android:name=".front.home.scoreboard.questions.TestActivity" />
+
+        <service
+            android:name=".model.firebase_messaging.CubicCodingFirebaseMessaging"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

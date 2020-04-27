@@ -13,7 +13,7 @@ import mx.cubiccoding.R
 import mx.cubiccoding.front.signup.SignupActivity
 import mx.cubiccoding.front.utils.views.ProgressActionDialog
 import mx.cubiccoding.model.networking.GenericLeakAndUISafeRequestListener
-import mx.cubiccoding.model.dtos.GetVoucherPayload
+import mx.cubiccoding.model.dtos.GetVoucherResponsePayload
 import mx.cubiccoding.model.utils.getErrorMessageForVoucherVerification
 
 class VoucherBottomDialogFragment : BottomSheetDialogFragment() {
@@ -81,14 +81,14 @@ class VoucherBottomDialogFragment : BottomSheetDialogFragment() {
             val activity = context as Activity
             activity.startActivity(Intent(context, SignupActivity::class.java))
             activity.overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
-            dismiss()
+            dismissAllowingStateLoss()
         }
         progressDialog?.dismiss(true)
     }
 
     private fun handleGettingVoucherFailed(error: Throwable) {
         progressDialog?.setOnDismissListener {
-            dismiss()
+            dismissAllowingStateLoss()
         }
         context?.apply {
             progressDialog?.setErrorMessage(getErrorMessageForVoucherVerification(this, error))
@@ -96,7 +96,7 @@ class VoucherBottomDialogFragment : BottomSheetDialogFragment() {
     }
 
     private class VoucherVerificationCallbackStub {
-        fun onSuccess(view: VoucherBottomDialogFragment, response: GetVoucherPayload) {
+        fun onSuccess(view: VoucherBottomDialogFragment, response: GetVoucherResponsePayload) {
             view.handleGettingVoucherSucceeded()
         }
 
