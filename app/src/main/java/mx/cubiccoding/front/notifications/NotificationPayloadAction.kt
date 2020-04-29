@@ -38,6 +38,7 @@ class NotificationPayloadAction(
 
         val context = CubicCodingApplication.instance
         var notificationIcon = R.drawable.ic_cc_no_bg
+        val notificationId = getNotificationId()
 
         //Setup the notification action, icon, and other properties...
         val intent = when(action) {
@@ -54,7 +55,7 @@ class NotificationPayloadAction(
                     Intent(context, Splash::class.java)
                 }
             }
-        val snoozePendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val snoozePendingIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = NotificationCompat.Builder(context, BASIC_NOTIFICATION_CHANNEL_ALL)
             .setSmallIcon(notificationIcon)
@@ -65,7 +66,7 @@ class NotificationPayloadAction(
                 .bigText(message))
             .setContentIntent(snoozePendingIntent)
 
-        fireNotification(context, getNotificationId(), builder)
+        fireNotification(context, notificationId, builder)
     }
 
     private fun getNotificationId(): Int =

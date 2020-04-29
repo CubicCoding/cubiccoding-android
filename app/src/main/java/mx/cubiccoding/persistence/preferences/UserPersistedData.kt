@@ -171,7 +171,7 @@ object UserPersistedData {
         username = userResponseBody.username ?: ""
         firstSurname = userResponseBody.firstSurname ?: ""
         secondSurname = userResponseBody.secondSurname ?: ""
-        avatar = userResponseBody.imageUrl ?: ""
+        avatar = userResponseBody.avatarUrl ?: ""
         createdDate = "${createdDateTmp?.day}/${createdDateTmp?.month}/${createdDateTmp?.year}"
         email = userResponseBody.email ?: ""//Make sure we are pointing to the right email...
 

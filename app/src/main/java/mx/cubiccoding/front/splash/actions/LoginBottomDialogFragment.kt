@@ -1,13 +1,11 @@
 package mx.cubiccoding.front.splash.actions
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.login_bottom_sheet_dialog.*
 import mx.cubiccoding.R
@@ -17,8 +15,6 @@ import mx.cubiccoding.front.signup.SignupPresenter
 import mx.cubiccoding.front.utils.IntentUtils
 import mx.cubiccoding.front.utils.views.ProgressActionDialog
 import mx.cubiccoding.front.utils.views.showFancyToast
-import mx.cubiccoding.model.networking.GenericLeakAndUISafeRequestListener
-import mx.cubiccoding.model.utils.Constants
 
 class LoginBottomDialogFragment: BottomSheetDialogFragment(), LoginViewContract {
 
@@ -87,6 +83,9 @@ class LoginBottomDialogFragment: BottomSheetDialogFragment(), LoginViewContract 
 
     override fun loginFailed() {
         progressDialog?.setErrorMessage(getString(R.string.user_or_password_incorrect))
+        //Reset focus to force keyboard to showup...
+        ccUsername.clearFocus()
+        ccPassword.clearFocus()
     }
 
 }

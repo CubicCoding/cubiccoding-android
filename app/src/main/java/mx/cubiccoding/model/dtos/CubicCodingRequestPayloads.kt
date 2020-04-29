@@ -7,7 +7,7 @@ import mx.cubiccoding.persistence.database.scoreboard.ScoreboardEntity
 data class BasicResponsePayload(val success: Int?)
 data class GetVoucherResponsePayload(val email: String?)
 data class LoginResponsePayload(val username: String?, val name: String?, val firstSurname: String?, val secondSurname: String?,
-                                val email: String?, val gender: String?, val imageUrl: String?, val createDate: CreateDatePayload?)
+                                val email: String?, val gender: String?, internal val avatarUrl: String?, val createDate: CreateDatePayload?)
 data class CreateDatePayload(val date: DatePayload?, val time: TimePayload?)
 data class DatePayload(val year: Int?, val month: Int?, val day: Int?)
 data class TimePayload(val hour: Int?, val minute: Int?, val second: Int?)
