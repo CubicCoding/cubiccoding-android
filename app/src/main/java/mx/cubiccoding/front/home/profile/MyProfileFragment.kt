@@ -13,21 +13,20 @@ import kotlinx.coroutines.withContext
 import mx.cubiccoding.R
 import mx.cubiccoding.front.CubicCodingApplication
 import mx.cubiccoding.front.home.scoreboard.model.ScoreRepository
-import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardDataItem
 import mx.cubiccoding.front.utils.views.TransitionToScreenAnimations
 import mx.cubiccoding.front.utils.views.loadImageCircle
 import mx.cubiccoding.model.dtos.ScoreboardItemPayload
 import mx.cubiccoding.persistence.preferences.UserPersistedData
 import timber.log.Timber
 
-class ProfileFragment: Fragment() {
+class MyProfileFragment: Fragment() {
 
     private val profileTransitionAnimations by lazy { TransitionToScreenAnimations() }
     companion object {
 
         const val TAG = "ProfileFragment"
-        fun newInstance(): ProfileFragment{
-            val fragment = ProfileFragment()
+        fun newInstance(): MyProfileFragment{
+            val fragment = MyProfileFragment()
             val args = Bundle()
             fragment.arguments = args
             return fragment

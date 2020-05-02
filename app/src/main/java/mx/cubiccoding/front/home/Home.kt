@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.home_activity.*
 import mx.cubiccoding.R
 import mx.cubiccoding.front.home.news.HelpFragment
-import mx.cubiccoding.front.home.profile.ProfileFragment
+import mx.cubiccoding.front.home.profile.MyProfileFragment
 import mx.cubiccoding.front.home.scoreboard.ScoreboardFragment
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment.Companion.TEST_UUID_PRE_POPULATED_KEY
@@ -70,7 +70,7 @@ class Home : AppCompatActivity(), HomeViewContract {
      * bottomNavigation@selectedItemId method...
      */
     override fun navigateToProfile() {
-        navigateToFragment(ProfileFragment.newInstance(), ProfileFragment.TAG)
+        navigateToFragment(MyProfileFragment.newInstance(), MyProfileFragment.TAG)
     }
 
     override fun navigateToScoreboard() {
