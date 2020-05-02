@@ -15,9 +15,11 @@ import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
 import mx.cubiccoding.front.home.scoreboard.model.ScoreRepository
 import mx.cubiccoding.front.home.scoreboard.model.ScoreboardViewModel
 import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardAdapter
-import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardRecyclerViewItem
+import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardDataItem
+import mx.cubiccoding.model.networking.calls.ScoreboardRequest
 import mx.cubiccoding.model.utils.getDefaultFormattedDateFromMillis
 import mx.cubiccoding.persistence.preferences.ScoreboardMetadata
+import mx.cubiccoding.persistence.preferences.UserPersistedData
 
 class ScoreboardFragment: Fragment() {
 
@@ -54,14 +56,14 @@ class ScoreboardFragment: Fragment() {
         scoreboardRecyclerView.adapter = adapter
 
         val model: ScoreboardViewModel by viewModels()
-        model.getScoresLiveData().observe(this, Observer {  scoreboardDataResponse ->
+        model.getScoresLiveData().observe(viewLifecycleOwner, Observer {  scoreboardDataResponse ->
             handleScoresObserver(scoreboardDataResponse)
         })
 
         //Start progress
         swipeRefreshLayout.isEnabled = false
         swipeRefreshLayout.setOnRefreshListener {
-            model.loadScores(true)
+            model.loadScores(UserPersistedData.email, UserPersistedData.classroomName, true)
             progress.visibility = View.VISIBLE
             emptyScoreText.visibility = View.GONE
         }
@@ -69,7 +71,7 @@ class ScoreboardFragment: Fragment() {
         question.setOnClickListener { GetTestBottomDialogFragment.newInstance().show(childFragmentManager, GetTestBottomDialogFragment.TAG) }
     }
 
-    private fun handleScoresObserver(scoreboardDataResponse: ScoreRepository.ScoreRepositoryResult?){
+    private fun handleScoresObserver(scoreboardDataResponse: ScoreboardRequest.ScoreboardRequestResult?){
         if (scoreboardDataResponse != null) {
             handleScoresListChanged(scoreboardDataResponse.score)
             //TODO: Notify about the source of the data...
@@ -84,7 +86,7 @@ class ScoreboardFragment: Fragment() {
         }
     }
 
-    private fun handleScoresListChanged(scoreboardItems: List<ScoreboardRecyclerViewItem>) {
+    private fun handleScoresListChanged(scoreboardItems: List<ScoreboardDataItem>) {
         progress.visibility = View.GONE
         swipeRefreshLayout.isEnabled = true
         swipeRefreshLayout.isRefreshing = false

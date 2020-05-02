@@ -82,13 +82,13 @@
         android:textSize="18dp"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/avatarRing"
-        app:layout_constraintRight_toLeftOf="@id/scoreValue"
+        app:layout_constraintRight_toLeftOf="@id/classroomValue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/scoreValue"
+        android:id="@+id/classroomValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"

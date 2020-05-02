@@ -11,8 +11,6 @@ import kotlinx.android.synthetic.main.get_test_sheet_dialog.*
 import mx.cubiccoding.R
 import mx.cubiccoding.front.home.scoreboard.questions.TestActivity
 import mx.cubiccoding.front.utils.views.ProgressActionDialog
-import mx.cubiccoding.front.utils.views.showFancyToast
-import mx.cubiccoding.model.dtos.GetTestResponsePayload
 import mx.cubiccoding.model.networking.CubicCodingRequestException
 import mx.cubiccoding.model.networking.GenericLeakAndUISafeRequestListener
 import mx.cubiccoding.model.networking.RequestErrorType

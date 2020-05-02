@@ -3,10 +3,7 @@ package mx.cubiccoding.front.home.scoreboard.questions.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardRecyclerViewItem.ScoreboardItemType
 import mx.cubiccoding.R
-import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardViewHolder
-import java.lang.IllegalArgumentException
 
 class QuestionOptionsAdapter: RecyclerView.Adapter<OptionViewHolder>() {
 

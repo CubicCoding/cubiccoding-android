@@ -20,87 +20,70 @@ import timber.log.Timber
 object UserRequest {
 
     @WorkerThread
-    fun signup(email: String, username: String, password: String, callback: GenericRequestListener<ResponseBody, Throwable>) {
+    fun signup(email: String, username: String, password: String): ResponseBody {
         Timber.d("Registering user email: $email, username: $username")
-        try {
-            val response = RequestsManager.cubicCodingManagerApi.signup(SignupRequestPayload( email, username, password)).execute()
-            when {
-                response.isSuccessful -> {
-                    if (response.body() != null) {
-                        callback.onResult(response.body())
-                    } else {
-                        throw CubicCodingRequestException(
-                            "RegisterPayload body is null",
-                            RequestErrorType.NULL_BODY,
-                            response.code()
-                        )
-                    }
+        val response = RequestsManager.cubicCodingManagerApi.signup(SignupRequestPayload(email, username, password)).execute()
+        when {
+            response.isSuccessful -> {
+                val responseBody = response.body()
+                if (responseBody != null) {
+                    return responseBody
+                } else {
+                    throw CubicCodingRequestException(
+                        "RegisterPayload body is null",
+                        RequestErrorType.NULL_BODY,
+                        response.code()
+                    )
                 }
-                !response.isSuccessful -> throw CubicCodingRequestException(
-                    "RegisterPayload request failed",
-                    RequestErrorType.UNSUCCESS,
-                    response.code()
-                )
             }
-        } catch (e: Exception) {
-            Timber.e(e, "ERROR")
-            if (e is CubicCodingRequestException) {
-                callback.onFail(e)
-            } else {//Turn it into a CubicCodingRequestException
-                callback.onFail(CubicCodingRequestException("RegisterPayload unknown error", RequestErrorType.GENERIC))
-            }
+            else -> throw CubicCodingRequestException(
+                "RegisterPayload request failed",
+                RequestErrorType.UNSUCCESS,
+                response.code()
+            )
         }
     }
 
     @WorkerThread
-    fun login(username: String, password: String, callback: GenericRequestListener<LoginResponsePayload, Throwable>) {
+    fun login(username: String, password: String): LoginResponsePayload? {
         Timber.d("Logging in user: $username")
-        try {
-            val response = RequestsManager.cubicCodingManagerApi.login(LoginRequestPayload( username, password)).execute()
-            when {
-                response.isSuccessful -> {
-                    if (response.body() != null) {
-                        val body = response.body()
-                        UserPersistedData.saveUserModel(body)
-                        UserPersistedData.isLogged = true
+        val response = RequestsManager.cubicCodingManagerApi.login(LoginRequestPayload(username, password)).execute()
+        when {
+            response.isSuccessful -> {
+                if (response.body() != null) {
+                    val body = response.body()
+                    UserPersistedData.saveUserModel(body)
+                    UserPersistedData.isLogged = true
 
-                        //Get cubiccoding's api token
-                        response.headers()[AUTHORIZATON_HEADER]?.apply {
-                            UserPersistedData.ccToken = this
-                            Timber.d("Saved user token: $this")
-                        }
-
-                        //Now that we are logged make sure that if there is a token, this token is up on the server
-                        val firebaseToken = UserPersistedData.firebaseToken
-                        val userEmail = body?.email ?: ""
-                        if (firebaseToken.isNotEmpty() && userEmail.isNotEmpty()) {
-                            FirebaseTokenUploader.registerToken(firebaseToken, userEmail)
-                        } else {
-                            Timber.e("Empty value for Firebase registration firebasetoken: $firebaseToken userEmail: $userEmail")
-                        }
-
-                        callback.onResult(body)
-                    } else {
-                        throw CubicCodingRequestException(
-                            "Logging In body is null",
-                            RequestErrorType.NULL_BODY,
-                            response.code()
-                        )
+                    //Get cubiccoding's api token
+                    response.headers()[AUTHORIZATON_HEADER]?.apply {
+                        UserPersistedData.ccToken = this
+                        Timber.d("Saved user token: $this")
                     }
+
+                    //Now that we are logged make sure that if there is a token, this token is up on the server
+                    val firebaseToken = UserPersistedData.firebaseToken
+                    val userEmail = body?.email ?: ""
+                    if (firebaseToken.isNotEmpty() && userEmail.isNotEmpty()) {
+                        FirebaseTokenUploader.registerToken(firebaseToken, userEmail)
+                    } else {
+                        Timber.e("Empty value for Firebase registration firebasetoken: $firebaseToken userEmail: $userEmail")
+                    }
+
+                    return body
+                } else {
+                    throw CubicCodingRequestException(
+                        "Logging In body is null",
+                        RequestErrorType.NULL_BODY,
+                        response.code()
+                    )
                 }
-                !response.isSuccessful -> throw CubicCodingRequestException(
-                    "Logging In request failed",
-                    RequestErrorType.UNSUCCESS,
-                    response.code()
-                )
             }
-        } catch (e: Exception) {
-            Timber.e(e, "ERROR")
-            if (e is CubicCodingRequestException) {
-                callback.onFail(e)
-            } else {//Turn it into a CubicCodingRequestException
-                callback.onFail(CubicCodingRequestException("Logging In unknown error", RequestErrorType.GENERIC))
-            }
+            else -> throw CubicCodingRequestException(
+                "Logging In request failed",
+                RequestErrorType.UNSUCCESS,
+                response.code()
+            )
         }
     }
 

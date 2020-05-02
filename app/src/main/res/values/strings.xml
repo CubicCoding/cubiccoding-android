@@ -76,4 +76,5 @@
     <string name="this_question_has_expired">Esta pregunta ya expiró</string>
     <string name="error_while_answering">Error al contestar</string>
     <string name="successfully_loaded_score">Tu score fue cargado con éxito</string>
+    <string name="rank">Rank</string>
 </resources>

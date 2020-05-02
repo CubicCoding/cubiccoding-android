@@ -26,5 +26,6 @@ interface CubicCodingManagerApi {
     @POST("/api/push-notifications")
     fun registerFirebaseToken(@Body uploadAnswerRequest: RegisterFirebaseTokenRequestPayload, @HeaderMap headers: Map<String, String> = RequestsManager.getAuthorizationHeader()): Call<ResponseBody>
 
-
+    @GET("/api/scoreboard")
+    fun getScoreboard(@Query("email") email: String, @Query("classroomName") classroomName: String, @HeaderMap headers: Map<String, String> = RequestsManager.getAuthorizationHeader()): Call<ScoreboardResponsePayload>
 }

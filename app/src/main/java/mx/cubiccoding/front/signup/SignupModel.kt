@@ -11,6 +11,7 @@ import mx.cubiccoding.model.networking.RequestErrorType
 import mx.cubiccoding.model.networking.calls.UserRequest
 import mx.cubiccoding.persistence.preferences.UserPersistedData
 import okhttp3.ResponseBody
+import timber.log.Timber
 
 class SignupModel: BaseMVPModel() {
 
@@ -22,7 +23,16 @@ class SignupModel: BaseMVPModel() {
         launch(Dispatchers.IO) {
             val email = UserPersistedData.email//Get the email off the ui thread...
             if (email.isNotEmpty()) {
-                UserRequest.signup(email, username, password, callback)
+                try {
+                    UserRequest.signup(email, username, password)
+                } catch (e: Exception) {
+                    Timber.e(e, "ERROR")
+                    if (e is CubicCodingRequestException) {
+                        callback.onFail(e)
+                    } else {//Turn it into a CubicCodingRequestException
+                        callback.onFail(CubicCodingRequestException("RegisterPayload unknown error", RequestErrorType.GENERIC))
+                    }
+                }
             } else {
                 callback.onFail(CubicCodingRequestException("Email is empty.", RequestErrorType.REGISTER_INTERNAL_EMAIL_IS_EMPTY)
                 )
