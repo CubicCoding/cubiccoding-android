@@ -1,6 +1,6 @@
 package mx.cubiccoding.front.home.scoreboard.recyclerview
 
-class ScoreboardRecyclerViewItem(val type: ScoreboardItemType, private val info: Any) {
+class ScoreboardDataItem(val type: ScoreboardItemType, private val info: Any) {
 
     enum class ScoreboardItemType {
         FIRST_PLACE,

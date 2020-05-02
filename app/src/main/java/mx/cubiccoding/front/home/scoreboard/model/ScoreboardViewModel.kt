@@ -6,17 +6,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import mx.cubiccoding.model.networking.calls.ScoreboardRequest
+import mx.cubiccoding.persistence.preferences.UserPersistedData
 
 class ScoreboardViewModel: ViewModel() {
 
-    private val scores: MutableLiveData<ScoreRepository.ScoreRepositoryResult?> by lazy { MutableLiveData<ScoreRepository.ScoreRepositoryResult?>().also { loadScores() } }
-    private val repository: ScoreRepository by lazy { ScoreRepository() }
+    private val scores: MutableLiveData<ScoreboardRequest.ScoreboardRequestResult?> by lazy {
+        MutableLiveData<ScoreboardRequest.ScoreboardRequestResult?>().also {
+            loadScores(UserPersistedData.email, UserPersistedData.classroomName)
+        }
+    }
 
-    fun getScoresLiveData(): LiveData<ScoreRepository.ScoreRepositoryResult?>  = scores
+    fun getScoresLiveData(): LiveData<ScoreboardRequest.ScoreboardRequestResult?>  = scores
 
-    fun loadScores(forceNetworkCall: Boolean = false) {
+    fun loadScores(email: String, classroomName: String, forceNetworkCall: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
-            scores.postValue(repository.getScores(forceNetworkCall))
+            scores.postValue(ScoreRepository.getScores(email, classroomName, forceNetworkCall))
         }
     }
 }

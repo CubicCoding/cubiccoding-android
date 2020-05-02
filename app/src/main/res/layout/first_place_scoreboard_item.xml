@@ -104,7 +104,7 @@
             app:layout_constraintBottom_toBottomOf="@id/shield"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/scoreLabel"
+            android:id="@+id/classroomLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -117,10 +117,10 @@
             android:textSize="11dp"
             app:layout_constraintLeft_toLeftOf="@id/shield"
             app:layout_constraintRight_toRightOf="@id/shield"
-            app:layout_constraintBottom_toTopOf="@+id/scoreValue" />
+            app:layout_constraintBottom_toTopOf="@+id/classroomValue" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/scoreValue"
+            android:id="@+id/classroomValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"

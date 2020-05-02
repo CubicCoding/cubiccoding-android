@@ -68,7 +68,7 @@
             android:padding="12dp"
             android:background="@drawable/gold_badge_circle"
             android:layout_marginRight="10dp"
-            android:src="@drawable/icon_cc_gold"
+            android:src="@drawable/ic_cc_no_bg"
             app:layout_constraintLeft_toRightOf="@id/avatar"
             app:layout_constraintRight_toRightOf="@id/avatar"
             app:layout_constraintBottom_toBottomOf="@id/avatar"/>
@@ -117,33 +117,68 @@
             android:id="@+id/rankValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:layout_marginRight="20dp"
             android:ellipsize="end"
             android:fontFamily="@font/prompt"
-            android:text="#1"
+            android:text=""
             android:includeFontPadding="false"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="35dp"
-            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/middleAnchor" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/rankLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:ellipsize="end"
             android:fontFamily="@font/prompt"
-            android:text="Rank"
+            android:text=""
             android:includeFontPadding="false"
             android:textStyle="bold"
             android:textSize="20dp"
             android:alpha=".9"
-            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="@id/rankValue"
+            app:layout_constraintLeft_toLeftOf="@id/rankValue"
             app:layout_constraintTop_toBottomOf="@id/middleAnchor" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/scoreLabelDots"
+            android:id="@+id/scoreValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_marginLeft="20dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:text="254/400"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/middleAnchor" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/scoreLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_marginLeft="20dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/prompt"
+            android:text="Score"
+            android:includeFontPadding="false"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:alpha=".9"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/middleAnchor" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/classroomDots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible"
@@ -164,7 +199,7 @@
             app:layout_constraintTop_toBottomOf="@id/specialist" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/scoreLabel"
+            android:id="@+id/classroomLabel"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -172,16 +207,16 @@
             android:gravity="left"
             android:includeFontPadding="false"
             android:maxLines="1"
-            android:text="Score"
+            android:text="Grupo"
             android:textColor="@color/smooth_black"
             android:textSize="14dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/scoreLabelDots"
+            app:layout_constraintBottom_toBottomOf="@id/classroomDots"
             app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@id/scoreLabelDots" />
+            app:layout_constraintTop_toTopOf="@id/classroomDots" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/scoreValue"
+            android:id="@+id/classroomValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -190,13 +225,13 @@
             android:gravity="left"
             android:includeFontPadding="false"
             android:maxLines="1"
-            android:text="300/450"
+            android:text="aula-001"
             android:textColor="@color/smooth_black"
             android:textSize="16dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/scoreLabelDots"
+            app:layout_constraintBottom_toBottomOf="@id/classroomDots"
             app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/scoreLabelDots" />
+            app:layout_constraintTop_toTopOf="@id/classroomDots" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/specialityDots"
@@ -215,7 +250,7 @@
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/scoreValue" />
+            app:layout_constraintTop_toBottomOf="@id/classroomValue" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/specialityLabel"

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.login_bottom_sheet_dialog.*
 import mx.cubiccoding.R
@@ -18,7 +19,7 @@ import mx.cubiccoding.front.utils.views.showFancyToast
 
 class LoginBottomDialogFragment: BottomSheetDialogFragment(), LoginViewContract {
 
-    private val loginComponent by lazy { LoginModelComponent() }
+    private var loginComponent: LoginModelComponent? = null
     private var progressDialog: ProgressActionDialog? = null
 
     companion object {
@@ -33,7 +34,14 @@ class LoginBottomDialogFragment: BottomSheetDialogFragment(), LoginViewContract 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        loginComponent = LoginModelComponent(lifecycleScope)
+
         setupViews()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        loginComponent?.releaseScope()//Required since lifecycles's scope was passed to login component
     }
 
     private fun setupViews() {
@@ -61,9 +69,9 @@ class LoginBottomDialogFragment: BottomSheetDialogFragment(), LoginViewContract 
         }
 
         if (inputError == SignupPresenter.RegistrationInputError.NO_ERROR) {
-            loginComponent.login(this, username, password)
+            loginComponent?.login(this, username, password)
             if (progressDialog == null) {
-                progressDialog = ProgressActionDialog(context!!, getString(R.string.logging_in), R.drawable.ic_info)
+                progressDialog = ProgressActionDialog(requireContext(), getString(R.string.logging_in), R.drawable.ic_info)
             }
             progressDialog?.show()
         } else {

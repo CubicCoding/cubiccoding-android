@@ -5,19 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.profile_fragment_1.avatar
-import kotlinx.android.synthetic.main.profile_fragment_1.badge
-import kotlinx.android.synthetic.main.profile_fragment_1.displayName
-import kotlinx.android.synthetic.main.profile_fragment_1.emailValue
-import kotlinx.android.synthetic.main.profile_fragment_1.profileRoot
-import kotlinx.android.synthetic.main.profile_fragment_1.rankValue
-import kotlinx.android.synthetic.main.profile_fragment_1.startedValue
-import kotlinx.android.synthetic.main.profile_fragment_1.usernameValue
+import androidx.lifecycle.lifecycleScope
+import kotlinx.android.synthetic.main.profile_fragment_1.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mx.cubiccoding.R
 import mx.cubiccoding.front.CubicCodingApplication
+import mx.cubiccoding.front.home.scoreboard.model.ScoreRepository
+import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardDataItem
 import mx.cubiccoding.front.utils.views.TransitionToScreenAnimations
 import mx.cubiccoding.front.utils.views.loadImageCircle
+import mx.cubiccoding.model.dtos.ScoreboardItemPayload
 import mx.cubiccoding.persistence.preferences.UserPersistedData
+import timber.log.Timber
 
 class ProfileFragment: Fragment() {
 
@@ -44,8 +45,7 @@ class ProfileFragment: Fragment() {
     ): View? {
         return if (CubicCodingApplication.instance.shouldAnimateProfile) {
             inflater.inflate(R.layout.profile_fragment_1, container, false)
-        }
-        else {
+        } else {
             inflater.inflate(R.layout.profile_fragment_2, container, false)
         }
     }
@@ -57,7 +57,6 @@ class ProfileFragment: Fragment() {
         //Is very important for the life cycle that animations start at the end of all the setup...
         if (CubicCodingApplication.instance.shouldAnimateProfile) {
             startIntroAnimation()
-            CubicCodingApplication.instance.shouldAnimateProfile = false//Prevent future animations until application is killed...
         }
     }
 
@@ -78,37 +77,77 @@ class ProfileFragment: Fragment() {
         emailValue.text = UserPersistedData.email
         usernameValue.text = UserPersistedData.username
         startedValue.text = UserPersistedData.createdDate
+        specialityValue.text = UserPersistedData.courseName
+        classroomValue.text = UserPersistedData.classroomName
         handleRankingViewSetup()
 
     }
 
     private fun handleRankingViewSetup() {
-        //Ranking logic...
-        val rank = 1//simulated rank
-        rankValue.text = "#$rank"
-        if (rank > 0) {
-            val badgeResourceId = when(rank) {
-                1 -> R.drawable.icon_cc_gold
-                2 -> R.drawable.icon_cc_silver
-                3 -> R.drawable.icon_cc_bronze
-                else -> R.drawable.ic_cc_no_bg
-            }
-            badge.setImageResource(badgeResourceId)
-            rankValue.text = "#$rank"
+        lifecycleScope.launch(Dispatchers.Main) {
 
-            val delayOfRankingViewAnimations = if(CubicCodingApplication.instance.shouldAnimateProfile) {
-                (INIT_DELAY_LARGE_LOGO_IN_MS + INIT_TRANSITION_DURATION_IN_MS + RANKING_ANIMATION_EXTRA_DELAY)
+            val ranking = getRanking()
+            val rank = ranking?.rank ?: -1
+            Timber.d("Track, User Ranking: $ranking")
+            if (rank > 0) {
+                val badgeResourceId = when(rank) {
+                    1 -> R.drawable.icon_cc_gold
+                    2 -> R.drawable.icon_cc_silver
+                    3 -> R.drawable.icon_cc_bronze
+                    else -> R.drawable.ic_cc_no_bg
+                }
+
+                badge.setImageResource(badgeResourceId)
+                rankValue.text = "#$rank"
+                rankLabel.text = getString(R.string.rank)
+
+                val delayOfRankingViewAnimations = if(CubicCodingApplication.instance.shouldAnimateProfile) {
+                    (INIT_DELAY_LARGE_LOGO_IN_MS + INIT_TRANSITION_DURATION_IN_MS + RANKING_ANIMATION_EXTRA_DELAY)
+                } else {
+                    RANKING_SHOW_QUICK_DELAY
+                }
+
+                Timber.d("Track, TIME TO WAIT!!! $delayOfRankingViewAnimations")
+                //Start animation to show ranking...
+                profileTransitionAnimations.animateVisibilityOfViews(
+                    root = profileRoot,
+                    visibility = View.VISIBLE,
+                    delayInMS = delayOfRankingViewAnimations,//Total wait of first animation + padding time
+                    transitionDuration = INIT_TRANSITION_DURATION_IN_MS,
+                    viewIds = *intArrayOf(R.id.badge, R.id.rankLabel, R.id.rankValue))
+
+                CubicCodingApplication.instance.shouldAnimateProfile = false//Prevent future animations until application is killed...
             } else {
-                RANKING_SHOW_QUICK_DELAY
+                rankValue.text = ""
+                rankLabel.text = ""
             }
-
-            //Start animation to show ranking...
-            profileTransitionAnimations.animateVisibilityOfViews(
-                root = profileRoot,
-                visibility = View.VISIBLE,
-                delayInMS = delayOfRankingViewAnimations,//Total wait of first animation + padding time
-                transitionDuration = INIT_TRANSITION_DURATION_IN_MS,
-                viewIds = *intArrayOf(R.id.badge, R.id.rankLabel, R.id.rankValue))
         }
     }
+
+    private suspend fun getRanking() = withContext(Dispatchers.IO) {
+        val currentLoggedInEmail = UserPersistedData.email
+        val currentLoggedInClassroom = UserPersistedData.classroomName
+        val response = ScoreRepository.getScores(currentLoggedInEmail, currentLoggedInClassroom, false)
+        if (response != null) {
+            val score = response.score
+            var ranking: Ranking? = null
+            for (item in score) {
+                val dataItem: ScoreboardItemPayload = item.getData()
+                if (dataItem.email == currentLoggedInEmail) {
+                    ranking = Ranking(dataItem.rank, dataItem.currentScore, dataItem.totalOfferedScore)
+                    break
+                }
+            }
+            //Log this case where we ended up without a ranking for the user
+            if (ranking == null) {
+                Timber.e("If there's a tournament active, this call must not be null...")
+            }
+
+            ranking
+        } else {
+            null
+        }
+    }
+
+    private class Ranking(val rank: Int?, val currentScore: Float?, val totalScore: Int?)
 }

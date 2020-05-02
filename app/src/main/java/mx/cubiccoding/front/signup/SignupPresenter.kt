@@ -17,7 +17,17 @@ import timber.log.Timber
 
 class SignupPresenter : BaseMVPPresenter<SignupViewContract, SignupModel>() {
 
-    private val loginComponent by lazy { LoginModelComponent() }
+    private var loginComponent: LoginModelComponent? = null
+
+    override fun init(viewContract: SignupViewContract, model: SignupModel) {
+        super.init(viewContract, model)
+        loginComponent = LoginModelComponent(model)
+    }
+
+    override fun terminate() {
+        super.terminate()
+        loginComponent?.releaseScope()//Required since model's scope was passed to login component
+    }
 
     fun presentDeeplinks(intent: Intent?) {
         val voucherUuid = intent?.data?.lastPathSegment
@@ -70,7 +80,7 @@ class SignupPresenter : BaseMVPPresenter<SignupViewContract, SignupModel>() {
 
     fun presentLogin() {
         val (username, password) = viewContract.getRegistrationInput()
-        loginComponent.login(viewContract, username, password)
+        loginComponent?.login(viewContract, username, password)
     }
 
     private class VoucherVerificationCallbackStub {

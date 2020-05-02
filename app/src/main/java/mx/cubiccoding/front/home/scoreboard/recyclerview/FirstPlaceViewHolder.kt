@@ -8,13 +8,13 @@ import mx.cubiccoding.model.dtos.ScoreboardItemPayload
 
 class FirstPlaceViewHolder(view: View): ScoreboardViewHolder(view) {
 
-    override fun bind(item: ScoreboardRecyclerViewItem) {
+    override fun bind(item: ScoreboardDataItem) {
         itemView.setOnClickListener {
             showFancyToast(itemView.context, "Clicked FIRST PLACE")
         }
         val data: ScoreboardItemPayload = item.getData()
-        itemView.displayName.text = "${data.name} ${data.firstSurname}"
-        itemView.scoreValue.text = "${data.score}/${data.totalScore}"
-        loadImageCircle(itemView.context, data.avatar, itemView.avatar)
+        itemView.displayName.text = data.displayName
+        itemView.classroomValue.text = "${data.currentScore?.toInt() ?: 0}/${data.totalOfferedScore}"
+        loadImageCircle(itemView.context, data.avatarUrl, itemView.avatar)
     }
 }
