@@ -1,4 +1,4 @@
-package mx.cubiccoding.front.notifications
+package mx.cubiccoding.front.notifications.actions
 
 class CommandPayloadAction(
     val action: String,

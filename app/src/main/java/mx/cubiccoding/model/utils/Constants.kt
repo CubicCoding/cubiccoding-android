@@ -60,7 +60,8 @@ class Constants {
 
         const val NOTIFICATION_TYPE_VALUE = "notification"
         const val COMMAND_TYPE_VALUE = "command"
-        const val NEW_SCORE_TEST_ACTION_VALUE = "new_score"
+        const val NEW_SCORE_OPTIONS_TEST_ACTION_VALUE = "new_score_options"
+        const val NEW_SCORE_CHALLENGE_TEST_ACTION_VALUE = "new_score_challenge"
         //================== Notifications ==================
     }
 }
