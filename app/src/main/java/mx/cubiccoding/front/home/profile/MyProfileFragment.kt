@@ -24,7 +24,7 @@ class MyProfileFragment: Fragment() {
     private val profileTransitionAnimations by lazy { TransitionToScreenAnimations() }
     companion object {
 
-        const val TAG = "ProfileFragment"
+        const val TAG = "MyProfileFragment"
         fun newInstance(): MyProfileFragment{
             val fragment = MyProfileFragment()
             val args = Bundle()

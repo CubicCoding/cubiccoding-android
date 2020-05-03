@@ -3,17 +3,30 @@ package mx.cubiccoding.front.home
 import android.app.Activity
 import android.content.Intent
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
+import com.donaumorgen.utel.model.pubsub.PubsubEvents
 import mx.cubiccoding.R
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
+import mx.cubiccoding.front.home.scoreboard.actions.StudentScoreboardFragment
 import mx.cubiccoding.front.mvp.BaseMVPPresenter
 import mx.cubiccoding.front.utils.IntentUtils
 import mx.cubiccoding.front.utils.isActivityAlive
+import mx.cubiccoding.model.dtos.ScoreboardItemPayload
+import mx.cubiccoding.model.pubsub.Pubsub
 import timber.log.Timber
 
-class HomePresenter: BaseMVPPresenter<HomeViewContract, HomeModel>() {
+class HomePresenter: BaseMVPPresenter<HomeViewContract, HomeModel>(), Pubsub.Listener {
 
     var lastSelectedMenuItem = R.id.item_profile
+
+    override fun init(viewContract: HomeViewContract, model: HomeModel) {
+        super.init(viewContract, model)
+        Pubsub.INSTANCE.addListener(this, PubsubEvents.LAUNCH_STUDENT_SCOREBOARD_FRAGMENT)
+    }
+
+    override fun terminate() {
+        super.terminate()
+        Pubsub.INSTANCE.removeListener(PubsubEvents.LAUNCH_STUDENT_SCOREBOARD_FRAGMENT, this)
+    }
 
     fun navigationSelected(item: MenuItem): Boolean {
         val selectedItem = item.itemId
@@ -68,6 +81,14 @@ class HomePresenter: BaseMVPPresenter<HomeViewContract, HomeModel>() {
             val willBeIgnored = lastSelectedMenuItem == currentlySelectedItem
             //TODO: Take an action when the currentlySelectedItem element will be ignored...
             willBeIgnored
+        }
+    }
+
+    override fun onEventReceived(data: Pubsub.PubsubData?) {
+        when(data?.eventType) {
+            PubsubEvents.LAUNCH_STUDENT_SCOREBOARD_FRAGMENT -> {
+                viewContract.showStudentScoreboardFragment(data.getData())
+            }
         }
     }
 }

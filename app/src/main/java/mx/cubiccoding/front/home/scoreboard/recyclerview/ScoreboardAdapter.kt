@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardDataItem.ScoreboardItemType
 import mx.cubiccoding.R
+import mx.cubiccoding.model.dtos.ScoreboardItemPayload
 import java.lang.IllegalArgumentException
 
 class ScoreboardAdapter: RecyclerView.Adapter<ScoreboardViewHolder>() {
