@@ -10,7 +10,8 @@ object ScoreboardMetadata {
     private var userSharedPrefs: SharedPreferences? = null
     private const val USER_PERSISTED_MODEL = "scoreboard.metadata"
     private const val LAST_DOWNLOAD_TIME = "last.download.time"
-    private const val LAST_ACTIVE_TOURNAMENT = "last.active.tournament"
+    private const val LAST_ACTIVE_TOURNAMENT_NAME = "last.active.tournament.name"
+    private const val LAST_ACTIVE_TOURNAMENT_ID = "last.active.tournament.id"
 
     var lastNetworkUpdate: Long
         get() {
@@ -19,11 +20,18 @@ object ScoreboardMetadata {
             savePref { putLong(LAST_DOWNLOAD_TIME, value) }
         }
 
-    var lastActiveTournament: String
+    var lastActiveTournamentName: String
         get() {
-            checkDevicePreferenceInit();return userSharedPrefs?.getString(LAST_ACTIVE_TOURNAMENT, "") ?: "" }
+            checkDevicePreferenceInit();return userSharedPrefs?.getString(LAST_ACTIVE_TOURNAMENT_NAME, "") ?: "" }
         set(value) {
-            savePref { putString(LAST_ACTIVE_TOURNAMENT, value) }
+            savePref { putString(LAST_ACTIVE_TOURNAMENT_NAME, value) }
+        }
+
+    var lastActiveTournamentId: Int
+        get() {
+            checkDevicePreferenceInit();return userSharedPrefs?.getInt(LAST_ACTIVE_TOURNAMENT_ID, 0) ?: 0 }
+        set(value) {
+            savePref { putInt(LAST_ACTIVE_TOURNAMENT_ID, value) }
         }
 
     fun deleteScorboardMetadata() {

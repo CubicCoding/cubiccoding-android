@@ -14,6 +14,7 @@ import mx.cubiccoding.R
 import mx.cubiccoding.front.CubicCodingApplication
 import mx.cubiccoding.front.home.scoreboard.model.ScoreRepository
 import mx.cubiccoding.front.utils.views.TransitionToScreenAnimations
+import mx.cubiccoding.front.utils.views.getBadgeResourceIdByRank
 import mx.cubiccoding.front.utils.views.loadImageCircle
 import mx.cubiccoding.model.dtos.ScoreboardItemPayload
 import mx.cubiccoding.persistence.preferences.UserPersistedData
@@ -89,17 +90,12 @@ class MyProfileFragment: Fragment() {
             val rank = ranking?.rank ?: -1
             Timber.d("Track, User Ranking: $ranking")
             if (rank > 0) {
-                val badgeResourceId = when(rank) {
-                    1 -> R.drawable.icon_cc_gold
-                    2 -> R.drawable.icon_cc_silver
-                    3 -> R.drawable.icon_cc_bronze
-                    else -> R.drawable.ic_cc_no_bg
-                }
-
+                val badgeResourceId = getBadgeResourceIdByRank(rank)
                 badge.setImageResource(badgeResourceId)
                 rankValue.text = "#$rank"
                 rankLabel.text = getString(R.string.rank)
-
+                scoreValue.text = "${ranking?.currentScore?.toInt() ?: 0}/${ranking?.totalScore ?: 0}"
+                scoreLabel.text = getString(R.string.score)
                 val delayOfRankingViewAnimations = if(CubicCodingApplication.instance.shouldAnimateProfile) {
                     (INIT_DELAY_LARGE_LOGO_IN_MS + INIT_TRANSITION_DURATION_IN_MS + RANKING_ANIMATION_EXTRA_DELAY)
                 } else {
@@ -113,7 +109,7 @@ class MyProfileFragment: Fragment() {
                     visibility = View.VISIBLE,
                     delayInMS = delayOfRankingViewAnimations,//Total wait of first animation + padding time
                     transitionDuration = INIT_TRANSITION_DURATION_IN_MS,
-                    viewIds = *intArrayOf(R.id.badge, R.id.rankLabel, R.id.rankValue))
+                    viewIds = *intArrayOf(R.id.badge, R.id.rankLabel, R.id.rankValue, R.id.scoreLabel, R.id.scoreValue))
 
                 CubicCodingApplication.instance.shouldAnimateProfile = false//Prevent future animations until application is killed...
             } else {

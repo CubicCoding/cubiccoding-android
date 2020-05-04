@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
-import com.donaumorgen.utel.model.pubsub.PubsubEvents
 import kotlinx.android.synthetic.main.home_activity.*
 import mx.cubiccoding.R
 import mx.cubiccoding.front.home.news.HelpFragment
@@ -13,10 +12,9 @@ import mx.cubiccoding.front.home.profile.MyProfileFragment
 import mx.cubiccoding.front.home.scoreboard.ScoreboardFragment
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment.Companion.TEST_UUID_PRE_POPULATED_KEY
-import mx.cubiccoding.front.home.scoreboard.actions.StudentScoreboardFragment
+import mx.cubiccoding.front.home.scoreboard.actions.student.StudentScoreboardFragment
 import mx.cubiccoding.front.utils.isActivityAlive
 import mx.cubiccoding.model.dtos.ScoreboardItemPayload
-import mx.cubiccoding.model.pubsub.Pubsub
 import timber.log.Timber
 
 
@@ -76,7 +74,8 @@ class Home : AppCompatActivity(), HomeViewContract {
             if (isActivityAlive(this@Home)) {
                 supportFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.flip_left_in, R.anim.flip_left_out, R.anim.flip_left_in, R.anim.flip_left_out)
-                    .replace(R.id.fragmentContainer, StudentScoreboardFragment.newInstance(data.email), StudentScoreboardFragment.TAG)
+                    .replace(R.id.fragmentContainer, StudentScoreboardFragment.newInstance(data.email, data.avatarUrl, data.displayName,
+                        data.rank, data.totalOfferedScore, data.currentScore?.toInt()), StudentScoreboardFragment.TAG)
                     .addToBackStack(StudentScoreboardFragment.TAG)
                     .commit()
 

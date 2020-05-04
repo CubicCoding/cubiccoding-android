@@ -12,11 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.scoreboard_fragment.*
 import mx.cubiccoding.R
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
-import mx.cubiccoding.front.home.scoreboard.actions.StudentScoreboardFragment
 import mx.cubiccoding.front.home.scoreboard.model.ScoreboardViewModel
 import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardAdapter
 import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardDataItem
-import mx.cubiccoding.model.dtos.ScoreboardItemPayload
 import mx.cubiccoding.model.networking.calls.ScoreboardRequest
 import mx.cubiccoding.model.utils.getDefaultFormattedDateFromMillis
 import mx.cubiccoding.persistence.preferences.ScoreboardMetadata
@@ -72,14 +70,14 @@ class ScoreboardFragment: Fragment() {
         question.setOnClickListener { GetTestBottomDialogFragment.newInstance().show(childFragmentManager, GetTestBottomDialogFragment.TAG) }
     }
 
-    private fun handleScoresObserver(scoreboardDataResponse: ScoreboardRequest.ScoreboardRequestResult?){
+    private fun handleScoresObserver(scoreboardDataResponse: ScoreboardRequest.ScoreboardRequestResult?) {
         if (scoreboardDataResponse != null) {
-            handleScoresListChanged(scoreboardDataResponse.tournament, scoreboardDataResponse.score)
+            handleScoresListChanged(scoreboardDataResponse.tournamentName, scoreboardDataResponse.score)
             //TODO: Notify about the source of the data...
         } else {//TODO: Handle error on scoreboard data case...
             emptyScoreText.text = getString(R.string.error_loading_scores)
             emptyScoreText.visibility = View.VISIBLE
-            if (adapter?.itemCount ?: 0 < 1) {//Only remove the top metadata if we don't have items in the list and failed to fetch(otherwise there could be the local items and we need this metadata)...
+            if (adapter.itemCount ?: 0 < 1) {//Only remove the top metadata if we don't have items in the list and failed to fetch(otherwise there could be the local items and we need this metadata)...
                 tournament.visibility = View.INVISIBLE
                 lastSync.visibility = View.INVISIBLE
                 shadow.visibility = View.INVISIBLE

@@ -49,7 +49,8 @@ object ScoreRepository {
             ScoreboardDataItem(type, entity.toNetworkPayload())
         }
         return ScoreboardRequest.ScoreboardRequestResult(
-            ScoreboardMetadata.lastActiveTournament,
+            ScoreboardMetadata.lastActiveTournamentName,
+            ScoreboardMetadata.lastActiveTournamentId,
             scoreboardItems
         )//Simulated empty response until we implement rooms...
     }

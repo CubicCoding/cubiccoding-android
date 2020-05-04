@@ -6,11 +6,9 @@ import android.view.MenuItem
 import com.donaumorgen.utel.model.pubsub.PubsubEvents
 import mx.cubiccoding.R
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
-import mx.cubiccoding.front.home.scoreboard.actions.StudentScoreboardFragment
 import mx.cubiccoding.front.mvp.BaseMVPPresenter
 import mx.cubiccoding.front.utils.IntentUtils
 import mx.cubiccoding.front.utils.isActivityAlive
-import mx.cubiccoding.model.dtos.ScoreboardItemPayload
 import mx.cubiccoding.model.pubsub.Pubsub
 import timber.log.Timber
 

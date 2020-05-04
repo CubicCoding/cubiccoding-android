@@ -125,8 +125,8 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/emptyScoreText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="gone"
         android:ellipsize="end"
         android:fontFamily="@font/prompt"
