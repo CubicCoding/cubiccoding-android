@@ -1,10 +1,8 @@
 package mx.cubiccoding.model.networking.calls
 
 import androidx.annotation.WorkerThread
-import mx.cubiccoding.front.home.scoreboard.model.ScoreRepository
 import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardDataItem
 import mx.cubiccoding.model.dtos.*
-import mx.cubiccoding.model.networking.GenericRequestListener
 import mx.cubiccoding.model.networking.RequestsManager
 import mx.cubiccoding.model.networking.CubicCodingRequestException
 import mx.cubiccoding.model.networking.RequestErrorType
@@ -15,12 +13,32 @@ import mx.cubiccoding.persistence.database.CubicCodingDB
 import mx.cubiccoding.persistence.database.questions.QuestionEntity
 import mx.cubiccoding.persistence.preferences.ScoreboardMetadata
 import org.json.JSONArray
-import retrofit2.Retrofit
 import timber.log.Timber
 
 object ScoreboardRequest {
 
-    data class ScoreboardRequestResult(val tournament: String, val score: List<ScoreboardDataItem>)
+    data class ScoreboardRequestResult(val tournamentName: String, val tournamentId: Int, val score: List<ScoreboardDataItem>)
+
+    @WorkerThread
+    fun getScoreboardUserSummary(email: String, tournamentId: Int): ScoreboardUserSummaryPayload {
+        val response = RequestsManager.cubicCodingManagerApi.getScoreboardSummaryForUser(email, tournamentId).execute()
+        return when {
+            response.isSuccessful -> {
+                response.body() ?: throw CubicCodingRequestException(
+                        "getScoreboardUserSummary request has null body",
+                        RequestErrorType.NULL_BODY,
+                        response.code()
+                    )
+            }
+            else -> {
+                throw CubicCodingRequestException(
+                    "getScoreboardUserSummary request not successful",
+                    RequestErrorType.UNSUCCESS,
+                    response.code()
+                )
+            }
+        }
+    }
 
     @WorkerThread
     fun getScore(email: String, classroomName: String): ScoreboardRequestResult {
@@ -49,11 +67,13 @@ object ScoreboardRequest {
                 }
 
                 //Update the last time that we successfully returned values...
-                val tournament = response.body()?.tournamentInfo?.tournamentName ?: ""
+                val tournamentName = response.body()?.tournamentInfo?.tournamentName ?: ""
+                val tournamentId = response.body()?.tournamentInfo?.id ?: 0
                 ScoreboardMetadata.lastNetworkUpdate = System.currentTimeMillis()
-                ScoreboardMetadata.lastActiveTournament = tournament
+                ScoreboardMetadata.lastActiveTournamentName = tournamentName
+                ScoreboardMetadata.lastActiveTournamentId = tournamentId
 
-                ScoreboardRequestResult(tournament ?: "", scoreboardItems)
+                ScoreboardRequestResult(tournamentName, tournamentId, scoreboardItems)
             }
             else -> {
                 throw CubicCodingRequestException(

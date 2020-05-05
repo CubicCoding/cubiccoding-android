@@ -152,7 +152,7 @@
             android:includeFontPadding="false"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:textSize="18dp"
+            android:textSize="12dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/middleAnchor" />
 

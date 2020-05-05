@@ -16,6 +16,9 @@ data class ScoreboardItemPayload(val rank: Int?, val currentScore: Float?, val t
     fun toDBEntity() = ScoreboardEntity(null, displayName, avatarUrl, currentScore, totalOfferedScore, rank, email)
 }
 data class ScoreboardResponsePayload(val tournamentInfo: TournamentInfo?, val secondaries: List<ScoreboardItemPayload>)
+data class MultipleOptionsSummaryPayload(val questionTitle: String?, val options: List<String>, val answers: List<Int>, val userAnswers: List<Int>, val createdDate: String?, val scoredRatio: Float?, val maxScore: Int?)
+data class ChallengeSummaryPayload(val questionTitle: String?, val maxScore: Int?, val createdDate: String?, val scoredRatio: Float?, val description: String?)
+data class ScoreboardUserSummaryPayload(val multipleOptions: List<MultipleOptionsSummaryPayload>, val challenges: List<ChallengeSummaryPayload>)
 data class GetTestResponsePayload(val uuid: String?, val label: String?, val questionTitle: String?, val scoreTestType: String, val options: List<String>, val answers: List<Int>, val maxScore: Int)
 
 //REQUEST PAYLOADS
