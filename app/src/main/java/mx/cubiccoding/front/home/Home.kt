@@ -3,14 +3,18 @@ package mx.cubiccoding.front.home
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.home_activity.*
 import mx.cubiccoding.R
 import mx.cubiccoding.front.home.news.HelpFragment
-import mx.cubiccoding.front.home.profile.ProfileFragment
+import mx.cubiccoding.front.home.profile.MyProfileFragment
 import mx.cubiccoding.front.home.scoreboard.ScoreboardFragment
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment.Companion.TEST_UUID_PRE_POPULATED_KEY
+import mx.cubiccoding.front.home.scoreboard.actions.student.StudentScoreboardFragment
+import mx.cubiccoding.front.utils.isActivityAlive
+import mx.cubiccoding.model.dtos.ScoreboardItemPayload
 import timber.log.Timber
 
 
@@ -55,10 +59,29 @@ class Home : AppCompatActivity(), HomeViewContract {
     }
 
     override fun onBackPressed() {
-        if (presenter.lastSelectedMenuItem == R.id.item_profile) {
+        if (!bottomNavigation.isEnabled) {//Leaving the student scoreboard state...
+            setEnabledBottomNavigation(true)
+            super.onBackPressed()//Allow fragment to leave the stack...
+        } else if (presenter.lastSelectedMenuItem == R.id.item_profile) {
             super.onBackPressed()
         } else {
             bottomNavigation.selectedItemId = R.id.item_profile
+        }
+    }
+
+    override fun showStudentScoreboardFragment(data: ScoreboardItemPayload) {
+        runOnUiThread {
+            if (isActivityAlive(this@Home)) {
+                supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.flip_left_in, R.anim.flip_left_out, R.anim.flip_left_in, R.anim.flip_left_out)
+                    .replace(R.id.fragmentContainer, StudentScoreboardFragment.newInstance(data.email, data.avatarUrl, data.displayName,
+                        data.rank, data.totalOfferedScore, data.currentScore?.toInt()), StudentScoreboardFragment.TAG)
+                    .addToBackStack(StudentScoreboardFragment.TAG)
+                    .commit()
+
+                //Always disable the navigation bottom when showing scorboard of stundent...
+               setEnabledBottomNavigation(false)
+            }
         }
     }
 
@@ -70,7 +93,7 @@ class Home : AppCompatActivity(), HomeViewContract {
      * bottomNavigation@selectedItemId method...
      */
     override fun navigateToProfile() {
-        navigateToFragment(ProfileFragment.newInstance(), ProfileFragment.TAG)
+        navigateToFragment(MyProfileFragment.newInstance(), MyProfileFragment.TAG)
     }
 
     override fun navigateToScoreboard() {
@@ -100,4 +123,11 @@ class Home : AppCompatActivity(), HomeViewContract {
         }
         GetTestBottomDialogFragment.newInstance(arg).show(supportFragmentManager, GetTestBottomDialogFragment.TAG)
     }
+
+    private fun setEnabledBottomNavigation(enabled: Boolean) {
+        bottomNavigation.alpha = if (enabled) 1F else 0.5F
+        bottomNavigation.isEnabled = enabled
+        bottomNavigation.menu.forEach { it.isEnabled = enabled }
+    }
+
 }

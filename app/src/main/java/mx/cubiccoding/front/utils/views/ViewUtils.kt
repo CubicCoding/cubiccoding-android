@@ -64,3 +64,11 @@ fun showKeyboard() {
     val imm = CubicCodingApplication.instance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 }
+
+fun getBadgeResourceIdByRank(rank: Int) = when(rank) {
+    1 -> R.drawable.icon_cc_gold
+    2 -> R.drawable.icon_cc_silver
+    3 -> R.drawable.icon_cc_bronze
+    else -> R.drawable.ic_cc_no_bg
+}
+

@@ -7,14 +7,25 @@ import android.text.Html
 import android.text.Spanned
 import mx.cubiccoding.R
 import mx.cubiccoding.model.networking.CubicCodingRequestException
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
 @SuppressLint("ConstantLocale")
-val defaultDateFormatter = SimpleDateFormat("dd'/'MM'/'yyyy', 'hh:mm aaa", Locale.getDefault())
+val defaultDateFormatterOutput = SimpleDateFormat("dd'/'MM'/'yyyy', 'hh:mm aaa", Locale.getDefault())
 @Synchronized
 fun getDefaultFormattedDateFromMillis(milliseconds: Long): String {
-    return defaultDateFormatter.format(Date(milliseconds)).capitalize()
+    return defaultDateFormatterOutput.format(Date(milliseconds)).capitalize()
+}
+@SuppressLint("ConstantLocale")
+val defaultDateFormatterInput = SimpleDateFormat("yyyy'-'MM'-'dd'T'hh:mm", Locale.getDefault())
+@Synchronized
+fun getDefaultFormattedDateFromServerDate(date: String?): String? {
+    return try {
+        getDefaultFormattedDateFromMillis(defaultDateFormatterInput.parse(date!!)?.time!!)
+    } catch (e: Exception) {
+        return null
+    }
 }
 
 @Suppress("DEPRECATION")

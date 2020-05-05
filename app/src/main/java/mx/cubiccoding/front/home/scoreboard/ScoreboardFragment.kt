@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.scoreboard_fragment.*
 import mx.cubiccoding.R
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
-import mx.cubiccoding.front.home.scoreboard.model.ScoreRepository
 import mx.cubiccoding.front.home.scoreboard.model.ScoreboardViewModel
 import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardAdapter
-import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardRecyclerViewItem
+import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardDataItem
+import mx.cubiccoding.model.networking.calls.ScoreboardRequest
 import mx.cubiccoding.model.utils.getDefaultFormattedDateFromMillis
 import mx.cubiccoding.persistence.preferences.ScoreboardMetadata
+import mx.cubiccoding.persistence.preferences.UserPersistedData
 
 class ScoreboardFragment: Fragment() {
 
@@ -54,14 +55,14 @@ class ScoreboardFragment: Fragment() {
         scoreboardRecyclerView.adapter = adapter
 
         val model: ScoreboardViewModel by viewModels()
-        model.getScoresLiveData().observe(this, Observer {  scoreboardDataResponse ->
+        model.getScoresLiveData().observe(viewLifecycleOwner, Observer {  scoreboardDataResponse ->
             handleScoresObserver(scoreboardDataResponse)
         })
 
         //Start progress
         swipeRefreshLayout.isEnabled = false
         swipeRefreshLayout.setOnRefreshListener {
-            model.loadScores(true)
+            model.loadScores(UserPersistedData.email, UserPersistedData.classroomName, true)
             progress.visibility = View.VISIBLE
             emptyScoreText.visibility = View.GONE
         }
@@ -69,37 +70,37 @@ class ScoreboardFragment: Fragment() {
         question.setOnClickListener { GetTestBottomDialogFragment.newInstance().show(childFragmentManager, GetTestBottomDialogFragment.TAG) }
     }
 
-    private fun handleScoresObserver(scoreboardDataResponse: ScoreRepository.ScoreRepositoryResult?){
+    private fun handleScoresObserver(scoreboardDataResponse: ScoreboardRequest.ScoreboardRequestResult?) {
         if (scoreboardDataResponse != null) {
-            handleScoresListChanged(scoreboardDataResponse.score)
+            handleScoresListChanged(scoreboardDataResponse.tournamentName, scoreboardDataResponse.score)
             //TODO: Notify about the source of the data...
         } else {//TODO: Handle error on scoreboard data case...
             emptyScoreText.text = getString(R.string.error_loading_scores)
             emptyScoreText.visibility = View.VISIBLE
-            if (adapter.itemCount < 1) {//Only remove the top metadata if we don't have items in the list and failed to fetch(otherwise there could be the local items and we need this metadata)...
-                prize.visibility = View.INVISIBLE
+            if (adapter.itemCount ?: 0 < 1) {//Only remove the top metadata if we don't have items in the list and failed to fetch(otherwise there could be the local items and we need this metadata)...
+                tournament.visibility = View.INVISIBLE
                 lastSync.visibility = View.INVISIBLE
                 shadow.visibility = View.INVISIBLE
             }
         }
     }
 
-    private fun handleScoresListChanged(scoreboardItems: List<ScoreboardRecyclerViewItem>) {
+    private fun handleScoresListChanged(tournnament: String, scoreboardItems: List<ScoreboardDataItem>) {
         progress.visibility = View.GONE
         swipeRefreshLayout.isEnabled = true
         swipeRefreshLayout.isRefreshing = false
 
         if (scoreboardItems.isNotEmpty()) {
-            adapter.populateScoreboard(scoreboardItems)
-            prize.text = "Steam Giftcard"
-            prize.visibility = View.VISIBLE
+            adapter?.populateScoreboard(scoreboardItems)
+            tournament.text = tournnament
+            tournament.visibility = View.VISIBLE
             lastSync.text = getDefaultFormattedDateFromMillis(ScoreboardMetadata.lastNetworkUpdate)
             lastSync.visibility = View.VISIBLE
             shadow.visibility = View.VISIBLE
         } else {
             emptyScoreText.text = getString(R.string.no_scores)
             emptyScoreText.visibility = View.VISIBLE
-            prize.visibility = View.INVISIBLE
+            tournament.visibility = View.INVISIBLE
             lastSync.visibility = View.INVISIBLE
             shadow.visibility = View.INVISIBLE
         }

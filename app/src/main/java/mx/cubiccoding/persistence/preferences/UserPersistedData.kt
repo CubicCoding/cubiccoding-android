@@ -15,6 +15,8 @@ object UserPersistedData {
     private const val FIRST_SURNAME_KEY = "first.surname.key"
     private const val SECOND_SURNAME_KEY = "second.surname.key"
     private const val AVATAR_KEY = "avatar.key"
+    private const val COURSE_NAME = "course.key"
+    private const val CLASSROOM_NAME = "classroom.key"
     private const val CREATED_DATE_KEY = "created.date.key"
     private const val TOKEN_KEY = "token.key"
     private const val LOGGED_KEY = "is.logged.key"
@@ -109,6 +111,36 @@ object UserPersistedData {
             }
         }
 
+    var courseName: String
+        get() {
+            checkDevicePreferenceInit();return userSharedPrefs?.getString(
+                COURSE_NAME, ""
+            ) ?: ""
+        }
+        set(value) {
+            savePref {
+                putString(
+                    COURSE_NAME,
+                    value
+                )
+            }
+        }
+
+    var classroomName: String
+        get() {
+            checkDevicePreferenceInit();return userSharedPrefs?.getString(
+                CLASSROOM_NAME, ""
+            ) ?: ""
+        }
+        set(value) {
+            savePref {
+                putString(
+                    CLASSROOM_NAME,
+                    value
+                )
+            }
+        }
+
     var createdDate: String
         get() {
             checkDevicePreferenceInit();return userSharedPrefs?.getString(
@@ -171,7 +203,9 @@ object UserPersistedData {
         username = userResponseBody.username ?: ""
         firstSurname = userResponseBody.firstSurname ?: ""
         secondSurname = userResponseBody.secondSurname ?: ""
-        avatar = userResponseBody.imageUrl ?: ""
+        avatar = userResponseBody.avatarUrl ?: ""
+        courseName = userResponseBody.courseName ?: ""
+        classroomName = userResponseBody.classroomName ?: ""
         createdDate = "${createdDateTmp?.day}/${createdDateTmp?.month}/${createdDateTmp?.year}"
         email = userResponseBody.email ?: ""//Make sure we are pointing to the right email...
 

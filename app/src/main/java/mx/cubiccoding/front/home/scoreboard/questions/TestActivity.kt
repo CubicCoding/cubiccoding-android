@@ -93,7 +93,12 @@ class TestActivity: AppCompatActivity() {
                 optionsSelected.forEach { answeredArray.put(it) }
                 questionDao.updateAnswered(testUuid, answeredArray.toString())
 
-                val response = ScoreboardRequest.uploadAnswer(testUuid, optionsSelected)
+                val response = try {
+                 ScoreboardRequest.uploadAnswer(testUuid, optionsSelected)
+                } catch (e: Exception) {
+                    Timber.e(e, "ERROR")
+                    ScoreboardRequest.UploadAnswerResult(ScoreboardRequest.UploadAnswerStatus.REQUIRES_RETRY, -1)
+                }
                 when (response.status) {
                     ScoreboardRequest.UploadAnswerStatus.SUCCESS -> {
                         workManager.cancelWorkById(worker.id)

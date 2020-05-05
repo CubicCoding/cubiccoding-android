@@ -3,13 +3,14 @@ package mx.cubiccoding.front.home.scoreboard.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardRecyclerViewItem.ScoreboardItemType
+import mx.cubiccoding.front.home.scoreboard.recyclerview.ScoreboardDataItem.ScoreboardItemType
 import mx.cubiccoding.R
+import mx.cubiccoding.model.dtos.ScoreboardItemPayload
 import java.lang.IllegalArgumentException
 
 class ScoreboardAdapter: RecyclerView.Adapter<ScoreboardViewHolder>() {
 
-    private val scoreboard = mutableListOf<ScoreboardRecyclerViewItem>()
+    private val scoreboard = mutableListOf<ScoreboardDataItem>()
 
     override fun getItemViewType(position: Int): Int {
         val item = scoreboard[position]
@@ -32,7 +33,7 @@ class ScoreboardAdapter: RecyclerView.Adapter<ScoreboardViewHolder>() {
     override fun getItemCount() = scoreboard.size
     override fun onBindViewHolder(holder: ScoreboardViewHolder, position: Int) { holder.bind(scoreboard[position]) }
 
-    fun populateScoreboard(scoreboard: List<ScoreboardRecyclerViewItem>) {
+    fun populateScoreboard(scoreboard: List<ScoreboardDataItem>) {
         this.scoreboard.clear()
         this.scoreboard.addAll(scoreboard)
         notifyDataSetChanged()

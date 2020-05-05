@@ -82,16 +82,17 @@
         android:textSize="18dp"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/avatarRing"
-        app:layout_constraintRight_toLeftOf="@id/scoreValue"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/scoreValue"
+        android:id="@+id/classroomValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:fontFamily="@font/prompt"
         android:gravity="left"
@@ -102,9 +103,12 @@
         android:textStyle="bold"
         android:textColor="@color/colorAccent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/shadow_down"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

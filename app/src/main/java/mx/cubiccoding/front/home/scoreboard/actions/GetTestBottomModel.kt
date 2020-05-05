@@ -11,12 +11,28 @@ import mx.cubiccoding.model.networking.CubicCodingRequestException
 import mx.cubiccoding.model.networking.RequestErrorType
 import mx.cubiccoding.model.networking.calls.ScoreboardRequest
 import mx.cubiccoding.persistence.database.CubicCodingDB
+import timber.log.Timber
 
 class GetTestBottomModel: BaseMVPModel() {
 
     fun getTestQuestion(uuid: String, callback: GenericRequestListener<String, Throwable>) {
         launch(Dispatchers.IO) {
-            ScoreboardRequest.getTestQuestion(uuid, callback)
+            try {
+                val question = ScoreboardRequest.getTestQuestion(uuid)
+                callback.onResult(question)
+            } catch (e: Exception) {
+                Timber.e(e, "ERROR")
+                if (e is CubicCodingRequestException) {
+                    callback.onFail(e)
+                } else {//Turn it into a CubicCodingRequestException
+                    callback.onFail(
+                        CubicCodingRequestException(
+                            "GetQuestion unknown error",
+                            RequestErrorType.GENERIC
+                        )
+                    )
+                }
+            }
         }
     }
 }

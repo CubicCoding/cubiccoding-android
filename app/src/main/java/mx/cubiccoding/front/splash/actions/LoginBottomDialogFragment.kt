@@ -1,13 +1,12 @@
 package mx.cubiccoding.front.splash.actions
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.login_bottom_sheet_dialog.*
 import mx.cubiccoding.R
@@ -17,12 +16,10 @@ import mx.cubiccoding.front.signup.SignupPresenter
 import mx.cubiccoding.front.utils.IntentUtils
 import mx.cubiccoding.front.utils.views.ProgressActionDialog
 import mx.cubiccoding.front.utils.views.showFancyToast
-import mx.cubiccoding.model.networking.GenericLeakAndUISafeRequestListener
-import mx.cubiccoding.model.utils.Constants
 
 class LoginBottomDialogFragment: BottomSheetDialogFragment(), LoginViewContract {
 
-    private val loginComponent by lazy { LoginModelComponent() }
+    private var loginComponent: LoginModelComponent? = null
     private var progressDialog: ProgressActionDialog? = null
 
     companion object {
@@ -37,7 +34,14 @@ class LoginBottomDialogFragment: BottomSheetDialogFragment(), LoginViewContract 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        loginComponent = LoginModelComponent(lifecycleScope)
+
         setupViews()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        loginComponent?.releaseScope()//Required since lifecycles's scope was passed to login component
     }
 
     private fun setupViews() {
@@ -65,9 +69,9 @@ class LoginBottomDialogFragment: BottomSheetDialogFragment(), LoginViewContract 
         }
 
         if (inputError == SignupPresenter.RegistrationInputError.NO_ERROR) {
-            loginComponent.login(this, username, password)
+            loginComponent?.login(this, username, password)
             if (progressDialog == null) {
-                progressDialog = ProgressActionDialog(context!!, getString(R.string.logging_in), R.drawable.ic_info)
+                progressDialog = ProgressActionDialog(requireContext(), getString(R.string.logging_in), R.drawable.ic_info)
             }
             progressDialog?.show()
         } else {
@@ -87,6 +91,9 @@ class LoginBottomDialogFragment: BottomSheetDialogFragment(), LoginViewContract 
 
     override fun loginFailed() {
         progressDialog?.setErrorMessage(getString(R.string.user_or_password_incorrect))
+        //Reset focus to force keyboard to showup...
+        ccUsername.clearFocus()
+        ccPassword.clearFocus()
     }
 
 }

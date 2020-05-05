@@ -11,23 +11,17 @@ data class ScoreboardEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = 0,
 
-    @ColumnInfo(name = "username")
-    val username: String?,
+    @ColumnInfo(name = "displayName")
+    val displayName: String?,
 
-    @ColumnInfo(name = "name")
-    val name: String?,
+    @ColumnInfo(name = "avatarUrl")
+    val avatarUrl: String?,
 
-    @ColumnInfo(name = "first_surname")
-    val firstSurname: String?,
+    @ColumnInfo(name = "currentScore")
+    val currentScore: Float?,
 
-    @ColumnInfo(name = "avatar")
-    val avatar: String?,
-
-    @ColumnInfo(name = "userScore")
-    val userScore: Int?,
-
-    @ColumnInfo(name = "totalScore")
-    val totalScore: Int?,
+    @ColumnInfo(name = "totalOfferedScore")
+    val totalOfferedScore: Int?,
 
     @ColumnInfo(name = "rank")
     val rank: Int?,
@@ -35,5 +29,5 @@ data class ScoreboardEntity(
     @ColumnInfo(name = "email")
     val email: String?
 ) {
-    fun toNetworkPayload() = ScoreboardItemPayload(username, name, firstSurname, userScore, totalScore, avatar, rank, email)
+    fun toNetworkPayload() = ScoreboardItemPayload(rank, currentScore, totalOfferedScore, displayName, avatarUrl, email)
 }
