@@ -18,6 +18,7 @@ import java.lang.Exception
 class FirebaseNotificationHandler {
 
     fun handlePushPayload(payload: Map<String, String>) {
+        Timber.d("Track, Notification Payload: $payload")
         val payloadContent = payload[Constants.PAYLOAD_CONTENT_VALUE]
         try {
             val content = JSONObject(payloadContent)

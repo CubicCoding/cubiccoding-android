@@ -59,7 +59,14 @@ class StudentScoreboardFragment: Fragment() {
         setupViews()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter.clearData()
+    }
+
     private fun setupViews() {
+
+        Timber.e("Track, StudentScoreboardFragment email: $email")
 
         val model: StudentScoreboardViewModel by viewModels { StudentViewModelFactory(email ?: "", ScoreboardMetadata.lastActiveTournamentId) }
         model.isLoading.observe(viewLifecycleOwner, Observer {
@@ -67,11 +74,9 @@ class StudentScoreboardFragment: Fragment() {
         })
 
         model.getSummaryLiveData().observe(viewLifecycleOwner, Observer {
-            Timber.e("Track, Tabselected: ${tabLayout.selectedTabPosition} Summary: \nmulti-options: ${it?.multipleOptions}, \nchallenges: ${it?.challenges}")
 
             //Set initial data in the adapter based on the currently selected tab...
             it?.apply {
-                Timber.e("Track, muti: ${multipleOptions.size} chall: ${challenges.size}")
                 adapter.setData(if (tabLayout.selectedTabPosition == 0) multipleOptions else challenges)
             }
 
@@ -83,7 +88,6 @@ class StudentScoreboardFragment: Fragment() {
                 override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    Timber.d("Track, Tab selected: ${tab?.position}")
                     it?.apply {
                         adapter.setData(if (tab?.position ?: 0 == 0) multipleOptions else challenges)
                     }

@@ -19,6 +19,7 @@ import mx.cubiccoding.front.home.Home.Companion.OPEN_BOTTOM_QUESTION_FRAGMENT_AC
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment.Companion.TEST_UUID_PRE_POPULATED_KEY
 import mx.cubiccoding.model.utils.Constants
 import mx.cubiccoding.persistence.preferences.UserPersistedData
+import timber.log.Timber
 import java.util.concurrent.ThreadLocalRandom
 
 
@@ -51,7 +52,7 @@ class NotificationPayloadAction(
         return when(action) {
             Constants.NEW_SCORE_OPTIONS_TEST_ACTION_VALUE -> createScoreOptionsNotification(context, notificationId)
             Constants.NEW_SCORE_CHALLENGE_TEST_ACTION_VALUE -> createScoreChallengesNotification(context, notificationId)
-            else -> null
+            else -> createGenericNotification(context, notificationId)
         }
     }
 
@@ -89,6 +90,20 @@ class NotificationPayloadAction(
             .setContentIntent(openApplication).build()
     }
 
+    private fun createGenericNotification(context: Context, notificationId: Int): Notification? {
+        val notificationIcon = R.drawable.ic_cc_no_bg
+        val intent = Intent(context, Home::class.java)
+        val openApplication = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return NotificationCompat.Builder(context, CHALLENGES_NOTIFICATION_CHANNEL_ALL)
+            .setSmallIcon(notificationIcon)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setAutoCancel(true)
+            .setStyle(NotificationCompat.BigTextStyle()
+                .bigText(message))
+            .setContentIntent(openApplication).build()
+    }
+
     private fun getNotificationId(): Int =
         // This logic could be updated based on our needs, for now the default is the hash of the push data or random if no data is provided
         if (pushData.isNotEmpty()) {
@@ -113,6 +128,7 @@ class NotificationPayloadAction(
                 actionChannel?.apply { createNotificationChannel(this) }
             }// android version < "O"
             notify(notificationId, notification)
+            Timber.e("Track, Firing notification: $notificationId")
         }
     }
 

@@ -24,7 +24,8 @@ class SignupModel: BaseMVPModel() {
             val email = UserPersistedData.email//Get the email off the ui thread...
             if (email.isNotEmpty()) {
                 try {
-                    UserRequest.signup(email, username, password)
+                    val result = UserRequest.signup(email, username, password)
+                    callback.onResult(result)
                 } catch (e: Exception) {
                     Timber.e(e, "ERROR")
                     if (e is CubicCodingRequestException) {
@@ -34,8 +35,7 @@ class SignupModel: BaseMVPModel() {
                     }
                 }
             } else {
-                callback.onFail(CubicCodingRequestException("Email is empty.", RequestErrorType.REGISTER_INTERNAL_EMAIL_IS_EMPTY)
-                )
+                callback.onFail(CubicCodingRequestException("Email is empty.", RequestErrorType.REGISTER_INTERNAL_EMAIL_IS_EMPTY))
             }
         }
     }

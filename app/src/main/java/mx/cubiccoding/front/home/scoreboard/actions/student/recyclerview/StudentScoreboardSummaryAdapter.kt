@@ -38,4 +38,9 @@ class StudentScoreboardSummaryAdapter: RecyclerView.Adapter<StudentScoreboardVie
         notifyDataSetChanged()
     }
 
+    fun clearData() {
+        items.clear()
+        notifyDataSetChanged()
+    }
+
 }

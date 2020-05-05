@@ -110,12 +110,11 @@ class MyProfileFragment: Fragment() {
                     delayInMS = delayOfRankingViewAnimations,//Total wait of first animation + padding time
                     transitionDuration = INIT_TRANSITION_DURATION_IN_MS,
                     viewIds = *intArrayOf(R.id.badge, R.id.rankLabel, R.id.rankValue, R.id.scoreLabel, R.id.scoreValue))
-
-                CubicCodingApplication.instance.shouldAnimateProfile = false//Prevent future animations until application is killed...
             } else {
                 rankValue.text = ""
                 rankLabel.text = ""
             }
+            CubicCodingApplication.instance.shouldAnimateProfile = false//Prevent future animations until application is killed...
         }
     }
 
