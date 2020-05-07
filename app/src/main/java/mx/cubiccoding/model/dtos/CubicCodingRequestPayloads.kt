@@ -12,7 +12,7 @@ data class CreateDatePayload(val date: DatePayload?, val time: TimePayload?)
 data class DatePayload(val year: Int?, val month: Int?, val day: Int?)
 data class TimePayload(val hour: Int?, val minute: Int?, val second: Int?)
 data class TournamentInfo(val id: Int?, val tournamentName: String?, val prize: String?)
-data class ScoreboardItemPayload(val rank: Int?, val currentScore: Float?, val totalOfferedScore: Int?, val displayName: String?, val avatarUrl: String?, val email: String?) {
+data class ScoreboardItemPayload(val rank: Int?, var currentScore: Float?, var totalOfferedScore: Int?, val displayName: String?, val avatarUrl: String?, val email: String?) {
     fun toDBEntity() = ScoreboardEntity(null, displayName, avatarUrl, currentScore, totalOfferedScore, rank, email)
 }
 data class ScoreboardResponsePayload(val tournamentInfo: TournamentInfo?, val secondaries: List<ScoreboardItemPayload>)

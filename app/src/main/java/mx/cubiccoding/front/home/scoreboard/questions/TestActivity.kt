@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.*
+import com.donaumorgen.utel.model.pubsub.PubsubEvents
 import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,10 +19,12 @@ import mx.cubiccoding.front.home.scoreboard.questions.recyclerview.QuestionOptio
 import mx.cubiccoding.front.utils.views.ConfirmActionDialog
 import mx.cubiccoding.front.utils.views.showFancyToast
 import mx.cubiccoding.model.networking.calls.ScoreboardRequest
+import mx.cubiccoding.model.pubsub.Pubsub
 import mx.cubiccoding.model.utils.Constants
 import mx.cubiccoding.model.workers.UploadAnswerWorker
 import mx.cubiccoding.persistence.database.CubicCodingDB
 import mx.cubiccoding.persistence.database.questions.QuestionEntity
+import mx.cubiccoding.persistence.preferences.UserPersistedData
 import org.json.JSONArray
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -78,7 +81,7 @@ class TestActivity: AppCompatActivity() {
                 setInitialDelay(Constants.UPLOAD_ANSWER_DELAY_IN_MS, TimeUnit.MILLISECONDS)
             }.build()
             val workManager = WorkManager.getInstance(this)
-            workManager.beginUniqueWork(Constants.UPLOAD_ANSWER_WORK_NAME, ExistingWorkPolicy.KEEP, worker).enqueue()
+            workManager.beginUniqueWork(testUuid, ExistingWorkPolicy.KEEP, worker).enqueue()
             Timber.e("Track, Scheduled a work to be executed for uploading the answer...")
 
             //Try to upload the answer immediately, if it works cancel the previous job, otherwise rely on the work manager to get it done when possible...
@@ -102,7 +105,9 @@ class TestActivity: AppCompatActivity() {
                 when (response.status) {
                     ScoreboardRequest.UploadAnswerStatus.SUCCESS -> {
                         workManager.cancelWorkById(worker.id)
+                        Pubsub.INSTANCE.publish(Pubsub.PubsubData(PubsubEvents.UPDATE_CURRENT_STUDENT_SCORE, null))
                         lifecycleScope.launch(Dispatchers.Main) {
+                            //Force an update on the scoreboard screen since we have a new score...
                             showFancyToast(this@TestActivity, getString(R.string.successfully_loaded_score), Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM)
                         }
                     }
@@ -127,7 +132,9 @@ class TestActivity: AppCompatActivity() {
     }
 
     private fun provideFeedback() {
-        val score = adapter.provideFeedback() * (questionInfo?.maxScore ?: 0)
+        val maxScore = questionInfo?.maxScore ?: 0
+        val score = (adapter.provideFeedback() * maxScore).toInt()
+
         showFancyToast(this, getString(R.string.received_score_value, score.toString()))
         scoreAwardedLabel.visibility = View.VISIBLE
         scoreAwardedLabel.text = getString(R.string.received_score_value, score.toString())
