@@ -38,4 +38,19 @@ class ScoreboardAdapter: RecyclerView.Adapter<ScoreboardViewHolder>() {
         this.scoreboard.addAll(scoreboard)
         notifyDataSetChanged()
     }
+
+    fun updateUserScore(email: String, score: Int, maxScore: Int) {
+        if (email.isNotEmpty() && score > 0) {//Only update if there's something to update...
+            for(index in scoreboard.indices) {
+                val item = scoreboard[index]
+                val data: Any = item.getData()
+                if (data is ScoreboardItemPayload && data.email == email) {
+                    data.currentScore = (data.currentScore ?: 0F) + score
+                    data.totalOfferedScore = (data.totalOfferedScore ?: 0) + maxScore
+                    notifyItemChanged(index)
+                    break
+                }
+            }
+        }
+    }
 }

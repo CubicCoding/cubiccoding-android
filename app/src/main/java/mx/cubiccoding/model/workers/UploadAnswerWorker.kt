@@ -17,7 +17,6 @@ class UploadAnswerWorker(context: Context, workerParams: WorkerParameters): Work
         return if (testUuid.isEmpty() || answers.isEmpty()) {//This is just defensive, we should never get here because if we don't have the right info we should not start the manager...
             Result.failure()
         } else {
-
             val response = try {
                 ScoreboardRequest.uploadAnswer(testUuid, answers.toList())
             } catch (e: Exception) {
