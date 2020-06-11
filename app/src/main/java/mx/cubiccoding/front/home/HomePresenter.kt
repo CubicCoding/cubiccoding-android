@@ -39,7 +39,10 @@ class HomePresenter: BaseMVPPresenter<HomeViewContract, HomeModel>(), Pubsub.Lis
                 viewContract.navigateToScoreboard()
             }
             R.id.item_help ->  {
-                viewContract.navigateToNews()
+                viewContract.navigateToHelp()
+            }
+            R.id.item_progress_achievement ->  {
+                viewContract.navigateToTimeline()
             }
         }
         lastSelectedMenuItem = selectedItem

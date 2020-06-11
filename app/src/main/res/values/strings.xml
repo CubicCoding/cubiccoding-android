@@ -80,4 +80,5 @@
     <string name="score">Score</string>
     <string name="questions">Preguntas</string>
     <string name="challenges">Retos</string>
+    <string name="progress">Progreso</string>
 </resources>

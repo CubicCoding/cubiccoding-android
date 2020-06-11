@@ -5,16 +5,21 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.home_activity.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import mx.cubiccoding.R
-import mx.cubiccoding.front.home.news.HelpFragment
+import mx.cubiccoding.front.home.help.HelpFragment
 import mx.cubiccoding.front.home.profile.MyProfileFragment
 import mx.cubiccoding.front.home.scoreboard.ScoreboardFragment
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment.Companion.TEST_UUID_PRE_POPULATED_KEY
 import mx.cubiccoding.front.home.scoreboard.actions.student.StudentScoreboardFragment
+import mx.cubiccoding.front.home.timeline.TimelineFragment
 import mx.cubiccoding.front.utils.isActivityAlive
 import mx.cubiccoding.model.dtos.ScoreboardItemPayload
+import mx.cubiccoding.model.networking.RequestsManager
 import timber.log.Timber
 
 
@@ -100,8 +105,12 @@ class Home : AppCompatActivity(), HomeViewContract {
         navigateToFragment(ScoreboardFragment.newInstance(), ScoreboardFragment.TAG)
     }
 
-    override fun navigateToNews() {
+    override fun navigateToHelp() {
         navigateToFragment(HelpFragment.newInstance(), HelpFragment.TAG)
+    }
+
+    override fun navigateToTimeline() {
+        navigateToFragment(TimelineFragment.newInstance(), TimelineFragment.TAG)
     }
 
     private fun navigateToFragment(fragment: Fragment, tag: String) {

@@ -20,9 +20,12 @@ data class MultipleOptionsSummaryPayload(val questionTitle: String?, val options
 data class ChallengeSummaryPayload(val questionTitle: String?, val maxScore: Int?, val createdDate: String?, val scoredRatio: Float?, val description: String?)
 data class ScoreboardUserSummaryPayload(val multipleOptions: List<MultipleOptionsSummaryPayload>, val challenges: List<ChallengeSummaryPayload>)
 data class GetTestResponsePayload(val uuid: String?, val label: String?, val questionTitle: String?, val scoreTestType: String, val options: List<String>, val answers: List<Int>, val maxScore: Int)
+data class TimelineStepPayload(val name: String, val description: String, val topics: List<String>)
+data class TimelineProgressPayload(val classroomName: String?, val timelineProgress: Int)
 
 //REQUEST PAYLOADS
 data class SignupRequestPayload(val email: String, val username: String, val password: String)
 data class LoginRequestPayload(val username: String, val password: String)
 data class UploadAnswerRequestPayload(val scoreTestUuid: String, val userAnswers: List<Int>)
 data class RegisterFirebaseTokenRequestPayload(val token: String, val email: String, val device: String)
+
