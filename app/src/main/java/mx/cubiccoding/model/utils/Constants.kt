@@ -1,5 +1,7 @@
 package mx.cubiccoding.model.utils
 
+import mx.cubiccoding.R
+
 class Constants {
     companion object {
         //================== Network Actions Constants ==================
@@ -47,6 +49,8 @@ class Constants {
         const val FIREBASE_EMAIL_WORKER_INPUT = "firebase.email.worker.input"
         const val UPLOAD_ANSWER_DELAY_IN_MS = 90000L
         const val ANDROID_DEVICE = "android"
+        val POOL_OF_COLORS = listOf(R.color.timeline_color_1, R.color.timeline_color_2, R.color.timeline_color_3, R.color.timeline_color_4,
+            R.color.timeline_color_5, R.color.timeline_color_6, R.color.timeline_color_7, R.color.timeline_color_8, R.color.timeline_color_9)
         //================== Miscellaneous ==================
 
 

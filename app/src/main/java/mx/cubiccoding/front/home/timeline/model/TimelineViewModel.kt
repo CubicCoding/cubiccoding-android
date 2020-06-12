@@ -16,8 +16,10 @@ class TimelineViewModel: ViewModel() {
             loadTimeline(UserPersistedData.classroomName)
         }
     }
+    private val inProgress: MutableLiveData<Boolean> = MutableLiveData(false)
 
     fun getTimeline(): LiveData<TimelineRepository.TimelineInfo>  = timeline
+    fun getProgressState(): LiveData<Boolean> = inProgress
 
     fun loadTimeline(classroomName: String, forceNetworkCall: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {

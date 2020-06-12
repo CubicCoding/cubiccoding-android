@@ -64,6 +64,7 @@ object TimelineRepository {
             stepJson.put("name", timelineStepPayload.name)
             stepJson.put("description", timelineStepPayload.description)
             stepJson.put("topics", topics)
+            stepsJsonArray.put(stepJson)
         }
 
         //Handle database insertion...
@@ -81,7 +82,7 @@ object TimelineRepository {
 
             //Flush the topics from the object...
             val topics = mutableListOf<String>()
-            for (topicIndex in 0 until jsonTopics.length()) { topics.add(jsonTopics.getString(index)) }
+            for (topicIndex in 0 until jsonTopics.length()) { topics.add(jsonTopics.getString(topicIndex)) }
 
             steps.add(TimelineStepPayload(stepsJson.getString("name"), stepsJson.getString("description"), topics))
         }

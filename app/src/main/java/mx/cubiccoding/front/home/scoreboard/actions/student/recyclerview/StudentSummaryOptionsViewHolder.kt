@@ -29,7 +29,7 @@ class StudentSummaryOptionsViewHolder(view: View): StudentScoreboardViewHolder(v
         val questionOptions = data.options
 
         val optionsBuilder = StringBuilder()
-        //Process question options
+        //Process question options//TODO: Add a better way to display the topics...
         for (index in questionOptions.indices) {
             val color = if (realAnswers.contains(index)) {
                 if (userAnswered.contains(index)) {

@@ -36,6 +36,6 @@ interface CubicCodingManagerApi {
     fun getPrinciplesTimeline(): Call<List<TimelineStepPayload>>
 
     @GET("/api/classrooms/{classroomName}/timeline-progress")
-    fun getClassroomTimelineProgress(@Path("classroomName") classroomName: String): Call<TimelineProgressPayload>
+    fun getClassroomTimelineProgress(@Path("classroomName") classroomName: String, @HeaderMap headers: Map<String, String> = RequestsManager.getAuthorizationHeader()): Call<TimelineProgressPayload>
 
 }
