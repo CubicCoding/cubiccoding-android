@@ -12,7 +12,7 @@ class TimelineAdapter: RecyclerView.Adapter<TimelineViewHolder>() {
     private var currentProgress = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimelineViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.timeline_step, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.timeline_step_item, parent, false)
         return TimelineViewHolder(view)
     }
 

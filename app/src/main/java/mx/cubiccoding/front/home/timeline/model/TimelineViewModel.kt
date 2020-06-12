@@ -22,8 +22,11 @@ class TimelineViewModel: ViewModel() {
     fun getProgressState(): LiveData<Boolean> = inProgress
 
     fun loadTimeline(classroomName: String, forceNetworkCall: Boolean = false) {
+        inProgress.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            timeline.postValue(TimelineRepository.getTimelineInfo(classroomName, forceNetworkCall))
+            val timelineInfo = TimelineRepository.getTimelineInfo(classroomName, forceNetworkCall)
+            timeline.postValue(timelineInfo)
+            inProgress.postValue(false)
         }
     }
 }

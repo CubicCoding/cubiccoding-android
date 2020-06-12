@@ -10,12 +10,13 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.timeline_fragment.*
-import kotlinx.android.synthetic.main.timeline_step.*
+import kotlinx.android.synthetic.main.timeline_step_item.*
 import mx.cubiccoding.R
 import mx.cubiccoding.front.home.scoreboard.model.ScoreboardViewModel
 import mx.cubiccoding.front.home.timeline.model.TimelineRepository
 import mx.cubiccoding.front.home.timeline.model.TimelineViewModel
 import mx.cubiccoding.front.home.timeline.recyclerview.TimelineAdapter
+import mx.cubiccoding.persistence.preferences.UserPersistedData
 import timber.log.Timber
 
 
@@ -52,6 +53,9 @@ class TimelineFragment: Fragment() {
         //Setup recyclerview...
         timelineRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         timelineRecyclerView.adapter = adapter
+        swipeRefreshLayout.setOnRefreshListener {
+            model?.loadTimeline(UserPersistedData.classroomName, true)
+        }
 
         val model: TimelineViewModel by viewModels()
         this.model = model
@@ -59,15 +63,22 @@ class TimelineFragment: Fragment() {
             handleTimelineObserver(timelineInfo)
         })
         model.getProgressState().observe(viewLifecycleOwner, Observer { inProgress ->
-            progress.visibility = if (inProgress) View.VISIBLE else View.GONE
+            swipeRefreshLayout.isRefreshing = if (inProgress) {
+                errorMessage.visibility = View.GONE
+                true
+            } else false
         })
     }
 
     private fun handleTimelineObserver(timelineInfo: TimelineRepository.TimelineInfo?) {
-        timelineInfo?.apply {
+        if (timelineInfo != null) {
             activity?.runOnUiThread {
-                adapter.setTimelineData(timeline, currentProgress)
+                swipeRefreshLayout.visibility = View.VISIBLE
+                adapter.setTimelineData(timelineInfo.timeline, timelineInfo.currentProgress)
             }
+        } else {
+            swipeRefreshLayout.visibility = View.GONE
+            errorMessage.visibility = View.VISIBLE
         }
     }
 }

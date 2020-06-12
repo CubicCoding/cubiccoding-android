@@ -3,12 +3,10 @@ package mx.cubiccoding.front.home.timeline.recyclerview
 import android.view.View
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.timeline_step.view.*
+import kotlinx.android.synthetic.main.timeline_step_item.view.*
 import mx.cubiccoding.front.utils.getCachedColor
 import mx.cubiccoding.model.dtos.TimelineStepPayload
 import mx.cubiccoding.model.utils.Constants
-import timber.log.Timber
-import java.lang.StringBuilder
 
 class TimelineViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
@@ -27,10 +25,16 @@ class TimelineViewHolder(view: View): RecyclerView.ViewHolder(view) {
         }
         itemView.stepDescription.text = timelineStepPayload.description
         itemView.stepTopics.text = getTopicsVerticallyOrdered(timelineStepPayload.topics)
+
+        itemView.itemBackground.setBackgroundColor(color)
+
+        itemView.stepTopicsHeader.setTextColor(color)
+
+        itemView.checkedIcon.visibility = if (position < currentProgress) View.VISIBLE else View.INVISIBLE
     }
 
     private fun getTopicsVerticallyOrdered(topics: List<String>): String {
-        val topicsBuilder = StringBuilder("Temas:\n")
+        val topicsBuilder = StringBuilder()
         topics.forEach {topic -> topicsBuilder.append("- $topic\n") }
         return topicsBuilder.toString()
     }
