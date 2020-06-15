@@ -1,8 +1,15 @@
 package mx.cubiccoding.front.home.scoreboard.actions.student.recyclerview
 
+import android.service.autofill.TextValueSanitizer
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.marginTop
 import kotlinx.android.synthetic.main.multioptions_summary_item.view.*
 import kotlinx.android.synthetic.main.question_option_item.view.*
+import mx.cubiccoding.R
+import mx.cubiccoding.front.utils.getCachedColor
 import mx.cubiccoding.model.dtos.MultipleOptionsSummaryPayload
 import mx.cubiccoding.model.utils.fromHtml
 import mx.cubiccoding.model.utils.getDefaultFormattedDateFromServerDate
@@ -28,24 +35,27 @@ class StudentSummaryOptionsViewHolder(view: View): StudentScoreboardViewHolder(v
         val realAnswers = data.answers
         val questionOptions = data.options
 
-        val optionsBuilder = StringBuilder()
-        //Process question options//TODO: Add a better way to display the topics...
+        bindOptions(questionOptions, realAnswers, userAnswered)
+    }
+
+    private fun bindOptions(questionOptions: List<String>, realAnswers: List<Int>, userAnswered: List<Int>) {
+        val calculatedMarginRequiredForOptions = itemView.context.resources.getDimension(R.dimen.common_edge_space).toInt()
+        val layoutInflater = LayoutInflater.from(itemView.context)
+        itemView.questionOptions.removeAllViews()//Clean the layout to rebind it...
         for (index in questionOptions.indices) {
+            val optionTextView = layoutInflater.inflate(R.layout.option_textview, null) as TextView
             val color = if (realAnswers.contains(index)) {
-                if (userAnswered.contains(index)) {
-                    "#17A05D"//Correct
-                } else {
-                    "#22A5F1" // User didn't answer a correct answer
-                }
+                if (userAnswered.contains(index)) { getCachedColor(R.color.option_correct) }
+                else { getCachedColor(R.color.option_unanswered) }
             } else {
-                if (userAnswered.contains(index)) {
-                    "#C43023" //Incorrect
-                } else {
-                    "#747474" //Irrelevant...
-                }
+                if (userAnswered.contains(index)) { getCachedColor(R.color.option_incorrect) }
+                else { getCachedColor(R.color.option_default) }
             }
-            optionsBuilder.append("<b>- </b><font color=\"$color\">${questionOptions[index]}</font><br/>")
+            optionTextView.text = questionOptions[index]
+            optionTextView.setTextColor(color)
+            itemView.questionOptions.addView(optionTextView)
+            //Programmatically after adding the view into the parent change it's margin
+            (optionTextView.layoutParams as? ViewGroup.MarginLayoutParams)?.bottomMargin = calculatedMarginRequiredForOptions
         }
-        itemView.questionOptions.text = fromHtml(optionsBuilder.toString())
     }
 }

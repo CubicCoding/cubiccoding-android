@@ -43,7 +43,9 @@ object TimelineRepository {
         val timelineProgress = classroomProgress.timelineProgress
 
         val timelineEntity = getTimelineEntityFromPayloads(classroomName, steps, timelineProgress)
-        CubicCodingDB.getDatabaseInstance().getTimelineDao().insert(timelineEntity)
+        val timelineDao = CubicCodingDB.getDatabaseInstance().getTimelineDao()
+        timelineDao.deleteAll()
+        timelineDao.insert(timelineEntity)
         TimelineMetadata.lastNetworkUpdate = System.currentTimeMillis()//If we successfully added a record cached, let's timestamp this cache...
 
         return TimelineInfo(steps, timelineProgress)

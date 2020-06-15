@@ -83,24 +83,26 @@ class TimelineFragment: Fragment() {
         if (timelineInfo != null) {
             activity?.runOnUiThread {
                 val timeline = timelineInfo.timeline
+                val currentProgress = timelineInfo.currentProgress
                 swipeRefreshLayout.visibility = View.VISIBLE
-                adapter.setTimelineData(timeline, timelineInfo.currentProgress)
+                adapter.setTimelineData(timeline, currentProgress)
 
                 //Recyclerview updates logic...
                 timelineRecyclerView.apply {
                     val tmpSmoothScroller = smoothScroller
                     if (tmpSmoothScroller != null) {
-                        tmpSmoothScroller.targetPosition = timelineInfo.currentProgress
+                        tmpSmoothScroller.targetPosition = currentProgress
                         (layoutManager as? LinearLayoutManager)?.startSmoothScroll(tmpSmoothScroller)
                     } else {
-                        layoutManager?.scrollToPosition(timelineInfo.currentProgress)
+                        layoutManager?.scrollToPosition(currentProgress)
                     }
                 }
 
                 //Progress updates logic...
                 progressBar.max = timeline.size
-                progressBar.progress = timeline.size.coerceAtMost(timelineInfo.currentProgress)
-//                progressBar.secondaryProgress = 10
+                progressBar.progress = timeline.size.coerceAtMost(currentProgress)
+                experienceSteps.visibility = View.VISIBLE
+                experienceSteps.text = getString(R.string.levels_format, (currentProgress + 1).toString(), timeline.size.toString())
             }
         } else {
             swipeRefreshLayout.visibility = View.GONE

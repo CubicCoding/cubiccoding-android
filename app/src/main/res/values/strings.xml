@@ -83,4 +83,5 @@
     <string name="progress">Progreso</string>
     <string name="no_progress_data">No hay datos de progreso.</string>
     <string name="topics">Temas:</string>
+    <string name="levels_format">%s / %s LEVEL UP</string>
 </resources>

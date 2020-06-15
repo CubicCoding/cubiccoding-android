@@ -32,8 +32,9 @@ class TimelineViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
         itemView.checkedIcon.visibility = if (position < currentProgress) View.VISIBLE else View.INVISIBLE
 
-        itemView.stepInfoHolder.alpha = if (currentProgress < position) 0.5F else 1F
-        itemView.timelineStep.alpha = if (currentProgress < position) 0.5F else 1F
+        val alpha = if (currentProgress < position) 0.4F else 1F
+        itemView.stepInfoHolder.alpha = alpha
+        itemView.timelineStep.alpha = alpha
     }
 
     private fun getTopicsVerticallyOrdered(topics: List<String>): String {

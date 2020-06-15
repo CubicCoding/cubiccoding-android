@@ -19,6 +19,12 @@
     <color name="green_right_answer">#19A15F</color>
     <color name="timeline_bar_color">#919191</color>
 
+    <!-- Options Colors for Answers -->
+    <color name="option_correct">#17A05D</color>
+    <color name="option_incorrect">#C43023</color>
+    <color name="option_unanswered">#22A5F1</color>
+    <color name="option_default">#747474</color>
+
     <!-- Pool of colors for timeline -->
     <color name="timeline_color_1">#EC8E49</color>
     <color name="timeline_color_2">#4198C9</color>
