@@ -1,5 +1,7 @@
 package mx.cubiccoding.model.utils
 
+import mx.cubiccoding.R
+
 class Constants {
     companion object {
         //================== Network Actions Constants ==================
@@ -18,8 +20,8 @@ class Constants {
 
         //================== HTTP Constants ==================
         const val CUBICCODING_MX_URL = "https://www.cubiccoding.mx/"
-        val CUBICCODING_MANAGER_URL = "https://cubiccoding-api.herokuapp.com/"
-//        const val CUBICCODING_MANAGER_URL = "http://192.168.0.14:8080/"
+//        val CUBICCODING_MANAGER_URL = "https://cubiccoding-api.herokuapp.com/"
+        const val CUBICCODING_MANAGER_URL = "http://192.168.0.14:8080/"
         const val HTTP_WAIT_TIME_IN_SECS = 30L
         const val HTTP_RESOURCE_NOT_FOUND = 404
         const val HTTP_RESOURCE_GONE = 410
@@ -47,6 +49,8 @@ class Constants {
         const val FIREBASE_EMAIL_WORKER_INPUT = "firebase.email.worker.input"
         const val UPLOAD_ANSWER_DELAY_IN_MS = 90000L
         const val ANDROID_DEVICE = "android"
+        val POOL_OF_COLORS = listOf(R.color.timeline_color_1, R.color.timeline_color_2, R.color.timeline_color_3, R.color.timeline_color_4,
+            R.color.timeline_color_5, R.color.timeline_color_6, R.color.timeline_color_7, R.color.timeline_color_8, R.color.timeline_color_9)
         //================== Miscellaneous ==================
 
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="270dp"
-    android:layout_height="200dp"
+    android:layout_height="210dp"
     android:layout_margin="7dp"
     android:background="?attr/selectableItemBackgroundBorderless"
     app:cardCornerRadius="5dp"
@@ -45,7 +45,9 @@
             android:id="@+id/optionAnswer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/prompt"
             android:gravity="center"
             android:includeFontPadding="false"
@@ -59,7 +61,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/optionNumber"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toTopOf="@id/resultMarker"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/checkedOption"

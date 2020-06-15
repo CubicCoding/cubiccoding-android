@@ -52,6 +52,6 @@ object ScoreRepository {
             ScoreboardMetadata.lastActiveTournamentName,
             ScoreboardMetadata.lastActiveTournamentId,
             scoreboardItems
-        )//Simulated empty response until we implement rooms...
+        )
     }
 }

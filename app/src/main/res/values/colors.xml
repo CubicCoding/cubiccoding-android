@@ -17,4 +17,22 @@
     <color name="bronze">#cd7f32</color>
     <color name="shadow_end_color">#33333333</color>
     <color name="green_right_answer">#19A15F</color>
+    <color name="timeline_bar_color">#919191</color>
+
+    <!-- Options Colors for Answers -->
+    <color name="option_correct">#17A05D</color>
+    <color name="option_incorrect">#C43023</color>
+    <color name="option_unanswered">#22A5F1</color>
+    <color name="option_default">#747474</color>
+
+    <!-- Pool of colors for timeline -->
+    <color name="timeline_color_1">#EC8E49</color>
+    <color name="timeline_color_2">#4198C9</color>
+    <color name="timeline_color_3">#E0696B</color>
+    <color name="timeline_color_4">#4A637B</color>
+    <color name="timeline_color_5">#D36A8B</color>
+    <color name="timeline_color_6">#817798</color>
+    <color name="timeline_color_7">#2A977E</color>
+    <color name="timeline_color_8">#B83B35</color>
+    <color name="timeline_color_9">#8CAC48</color>
 </resources>

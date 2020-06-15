@@ -17,6 +17,13 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/item_progress_achievement"
+        android:enabled="true"
+        android:icon="@drawable/ic_progress_achievement"
+        android:title="@string/progress"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/item_help"
         android:enabled="true"
         android:icon="@drawable/ic_help"
