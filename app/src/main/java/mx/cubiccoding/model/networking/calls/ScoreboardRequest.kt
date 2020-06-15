@@ -66,6 +66,9 @@ object ScoreboardRequest {
 
                 }
 
+                //TODO: This DB processing could be taken out into the repository to allow the modularity of
+                //TODO: making only request without DB, giving the code the chance to do only request(here), only db(dao), both(repository)
+                //TODO: rather than coupling requests+db as the only choice...(Look at TimelineRepository/Request/Dao)
                 //Update the last time that we successfully returned values...
                 val tournamentName = response.body()?.tournamentInfo?.tournamentName ?: ""
                 val tournamentId = response.body()?.tournamentInfo?.id ?: 0

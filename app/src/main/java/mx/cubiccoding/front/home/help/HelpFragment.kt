@@ -1,4 +1,4 @@
-package mx.cubiccoding.front.home.news
+package mx.cubiccoding.front.home.help
 
 import android.content.Intent
 import android.net.Uri

@@ -31,4 +31,11 @@ interface CubicCodingManagerApi {
 
     @GET("/api/scoreboard/history")
     fun getScoreboardSummaryForUser(@Query("email") email: String, @Query("tournamentId") tournamentId: Int, @HeaderMap headers: Map<String, String> = RequestsManager.getAuthorizationHeader()): Call<ScoreboardUserSummaryPayload>
+
+    @GET("/principles_knowledge_timeline.json")
+    fun getPrinciplesTimeline(): Call<List<TimelineStepPayload>>
+
+    @GET("/api/classrooms/{classroomName}/timeline-progress")
+    fun getClassroomTimelineProgress(@Path("classroomName") classroomName: String, @HeaderMap headers: Map<String, String> = RequestsManager.getAuthorizationHeader()): Call<TimelineProgressPayload>
+
 }

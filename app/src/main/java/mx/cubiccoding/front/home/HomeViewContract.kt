@@ -6,7 +6,8 @@ interface HomeViewContract {
 
     fun navigateToProfile()
     fun navigateToScoreboard()
-    fun navigateToNews()
+    fun navigateToHelp()
+    fun navigateToTimeline()
     fun showQuestionBottomFragment(uuid: String)
     fun showStudentScoreboardFragment(data: ScoreboardItemPayload)
 

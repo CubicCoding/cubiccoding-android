@@ -9,10 +9,14 @@ import mx.cubiccoding.persistence.database.questions.QuestionEntity
 import mx.cubiccoding.persistence.database.questions.QuestionsDao
 import mx.cubiccoding.persistence.database.scoreboard.ScoreboardDao
 import mx.cubiccoding.persistence.database.scoreboard.ScoreboardEntity
+import mx.cubiccoding.persistence.database.timeline.TimelineDao
+import mx.cubiccoding.persistence.database.timeline.TimelineEntity
 
-@Database(entities = [ScoreboardEntity::class, QuestionEntity::class], version = 1, exportSchema = false)
+@Database(entities = [ScoreboardEntity::class, QuestionEntity::class, TimelineEntity::class], version = 2
+    , exportSchema = false)
 abstract class CubicCodingDB: RoomDatabase() {
     abstract fun getScoreboardDao(): ScoreboardDao
+    abstract fun getTimelineDao(): TimelineDao
     abstract fun getQuestionDao(): QuestionsDao
     companion object {
 
