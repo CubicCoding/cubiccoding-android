@@ -1,9 +1,15 @@
 package mx.cubiccoding.persistence.preferences
 
+import android.R.attr.timeZone
 import android.content.Context
 import android.content.SharedPreferences
 import mx.cubiccoding.front.CubicCodingApplication
+import mx.cubiccoding.model.dtos.CreateDatePayload
 import mx.cubiccoding.model.dtos.LoginResponsePayload
+import mx.cubiccoding.model.utils.getDefaultDateFormattedNoTimeFromDate
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 object UserPersistedData {
 
@@ -21,6 +27,7 @@ object UserPersistedData {
     private const val TOKEN_KEY = "token.key"
     private const val LOGGED_KEY = "is.logged.key"
     private const val FIREBASE_TOKEN_KEY = "firebase.token.key"
+    val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
 
     var email: String
         get() {
@@ -197,8 +204,6 @@ object UserPersistedData {
     fun saveUserModel(userResponseBody: LoginResponsePayload?) {
         userResponseBody ?: return
 
-        val createdDateTmp = userResponseBody.createDate?.date
-
         name = userResponseBody.name ?: ""
         username = userResponseBody.username ?: ""
         firstSurname = userResponseBody.firstSurname ?: ""
@@ -206,9 +211,25 @@ object UserPersistedData {
         avatar = userResponseBody.avatarUrl ?: ""
         courseName = userResponseBody.courseName ?: ""
         classroomName = userResponseBody.classroomName ?: ""
-        createdDate = "${createdDateTmp?.day}/${createdDateTmp?.month}/${createdDateTmp?.year}"
+        createdDate = localizeDate(userResponseBody.createDate)
         email = userResponseBody.email ?: ""//Make sure we are pointing to the right email...
 
+    }
+
+    private fun localizeDate(createDatePayload: CreateDatePayload?): String {
+        val datePayload = createDatePayload?.date ?: return ""
+        val timePayload = createDatePayload.time ?: return ""
+
+        calendar.clear()
+        calendar.apply {
+            set(Calendar.YEAR, datePayload.year ?: 0)
+            set(Calendar.MONTH, ((datePayload.month ?: 0) - 1).coerceAtLeast(0))
+            set(Calendar.DAY_OF_MONTH, datePayload.day ?: 0)
+            set(Calendar.HOUR, timePayload.hour ?: 0)
+            set(Calendar.MINUTE, timePayload.minute ?: 0)
+            set(Calendar.SECOND, timePayload.second ?: 0)
+        }
+        return getDefaultDateFormattedNoTimeFromDate(calendar.time)
     }
 
     fun deleteUser() {
