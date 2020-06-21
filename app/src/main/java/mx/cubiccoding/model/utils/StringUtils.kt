@@ -12,13 +12,20 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @SuppressLint("ConstantLocale")
-val defaultDateFormatterOutput = SimpleDateFormat("dd'/'MM'/'yyyy', 'hh:mm aaa", Locale.getDefault())
+val defaultDateFormatterOutput = SimpleDateFormat("dd'/'MM'/'yyyy', 'hh:mm aaa", Locale.getDefault()).apply { timeZone = TimeZone.getDefault() }
 @Synchronized
 fun getDefaultFormattedDateFromMillis(milliseconds: Long): String {
     return defaultDateFormatterOutput.format(Date(milliseconds)).capitalize()
 }
+
+val defaultDateFormatNoTimeOutput = SimpleDateFormat("dd'/'MM'/'yyyy", Locale.US).apply { timeZone = TimeZone.getDefault() }
+@Synchronized
+fun getDefaultDateFormattedNoTimeFromDate(date: Date): String {
+    return defaultDateFormatNoTimeOutput.format(date)
+}
+
 @SuppressLint("ConstantLocale")
-val defaultDateFormatterInput = SimpleDateFormat("yyyy'-'MM'-'dd'T'hh:mm", Locale.getDefault())
+val defaultDateFormatterInput = SimpleDateFormat("yyyy'-'MM'-'dd'T'hh:mm", Locale.getDefault()).apply { timeZone = TimeZone.getTimeZone("UTC") }
 @Synchronized
 fun getDefaultFormattedDateFromServerDate(date: String?): String? {
     return try {
