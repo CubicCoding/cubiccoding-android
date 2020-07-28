@@ -4,7 +4,8 @@ class ScoreboardSummaryDataItem(val type: ScoreboardSummaryItemType, private val
 
     enum class ScoreboardSummaryItemType {
         MULTI_OPTIONS,
-        CHALLENGES
+        CHALLENGES,
+        BONUS_POINTS
     }
 
     //util method for auto casting info, this will let us know immediately if we are handling bad info...

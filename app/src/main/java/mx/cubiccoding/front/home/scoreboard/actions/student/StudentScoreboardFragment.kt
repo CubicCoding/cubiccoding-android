@@ -13,11 +13,14 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import kotlinx.android.synthetic.main.student_scoreboard_fragment.*
 import mx.cubiccoding.R
+import mx.cubiccoding.front.home.scoreboard.actions.student.recyclerview.ScoreboardSummaryDataItem
 import mx.cubiccoding.front.home.scoreboard.actions.student.recyclerview.StudentScoreboardSummaryAdapter
 import mx.cubiccoding.front.utils.views.getBadgeResourceIdByRank
 import mx.cubiccoding.front.utils.views.loadImageCircle
+import mx.cubiccoding.front.utils.views.showFancyToast
 import mx.cubiccoding.persistence.preferences.ScoreboardMetadata
 import timber.log.Timber
+import java.lang.IllegalStateException
 
 class StudentScoreboardFragment: Fragment() {
 
@@ -29,6 +32,9 @@ class StudentScoreboardFragment: Fragment() {
         const val RANK_EXTRA_KEY = "rank.extra.key"
         const val TOTAL_SCORE_EXTRA_KEY = "max.score.extra.key"
         const val CURRENT_SCORE_EXTRA_KEY = "current.score.extra.key"
+        const val MULTI_OPTIONS_POSITION = 0
+        const val CHALLENGE_POSITION = 1
+        const val BONUS_POSITION = 2
 
         private var email: String? = null
         private val adapter by lazy { StudentScoreboardSummaryAdapter() }
@@ -74,29 +80,41 @@ class StudentScoreboardFragment: Fragment() {
         })
 
         model.getSummaryLiveData().observe(viewLifecycleOwner, Observer {
-
-            //Set initial data in the adapter based on the currently selected tab...
-            it?.apply {
-                adapter.setData(if (tabLayout.selectedTabPosition == 0) multipleOptions else challenges)
-            }
-
-            //Setup the tabs listener
-            tabLayout.clearOnTabSelectedListeners()
-            tabLayout.addOnTabSelectedListener(object: OnTabSelectedListener {
-                override fun onTabReselected(tab: TabLayout.Tab?) {}
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-                override fun onTabSelected(tab: TabLayout.Tab?) {
-                    it?.apply {
-                        adapter.setData(if (tab?.position ?: 0 == 0) multipleOptions else challenges)
-                    }
-                }
-            })
+            onSummaryDataChanged(it)
         })
+
         //Start getting the summary
         model.getSummaryFromUser()
 
+        setupScreenDefaultInitState()
+    }
+
+    private fun onSummaryDataChanged(summaryData: StudentScoreboardViewModel.ScoreboardSummaryModelResult?) {
+        //Set initial data in the adapter based on the currently selected tab...
+        summaryData?.apply {
+            adapter.setData(getItemsByTabPosition(tabLayout.selectedTabPosition, summaryData))
+            if (adapter.itemCount < 1) {
+                showFancyToast(context, getString(R.string.no_elements_to_display))
+            }
+        }
+
+        //Setup the tabs listener to update to another set of internal data if required...
+        tabLayout.clearOnTabSelectedListeners()
+        tabLayout.addOnTabSelectedListener(object: OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                summaryData?.apply {
+                    adapter.setData(getItemsByTabPosition(tab?.position ?: 0, summaryData))
+                    if (adapter.itemCount < 1) {
+                        showFancyToast(context, getString(R.string.no_elements_to_display))
+                    }
+                }
+            }
+        })
+    }
+
+    private fun setupScreenDefaultInitState() {
         studentSummaryRecyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         studentSummaryRecyclerView.adapter = adapter
         val avatarUrl = arguments?.getString(AVATAR_EXTRA_KEY)
@@ -112,6 +130,15 @@ class StudentScoreboardFragment: Fragment() {
         rankLabel.text = getString(R.string.rank)
         scoreValue.text = "$currentScore/$totalScore"
         scoreLabel.text = getString(R.string.score)
+    }
+
+    private fun getItemsByTabPosition(tabPosition: Int, summaryData: StudentScoreboardViewModel.ScoreboardSummaryModelResult): List<ScoreboardSummaryDataItem> {
+        return when (tabPosition) {
+            MULTI_OPTIONS_POSITION -> summaryData.multipleOptions
+            CHALLENGE_POSITION -> summaryData.challenges
+            BONUS_POSITION -> summaryData.bonusPoints
+            else -> throw IllegalStateException("This position is invalid, verify the number of tabs")
+        }
     }
 
 }

@@ -53,5 +53,5 @@ object RequestsManager {
         }.create(CubicCodingManagerApi::class.java)
     }
 
-    fun getAuthorizationHeader() = Collections.singletonMap(Constants.AUTHORIZATON_HEADER, UserPersistedData.ccToken)
+    fun getAuthorizationHeader() = Collections.singletonMap(Constants.AUTHORIZATION_HEADER, UserPersistedData.ccToken)
 }

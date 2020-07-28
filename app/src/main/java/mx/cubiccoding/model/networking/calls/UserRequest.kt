@@ -7,11 +7,10 @@ import mx.cubiccoding.model.dtos.RegisterFirebaseTokenRequestPayload
 import mx.cubiccoding.model.dtos.SignupRequestPayload
 import mx.cubiccoding.model.firebase_messaging.FirebaseTokenUploader
 import mx.cubiccoding.model.networking.CubicCodingRequestException
-import mx.cubiccoding.model.networking.GenericRequestListener
 import mx.cubiccoding.model.networking.RequestErrorType
 import mx.cubiccoding.model.networking.RequestsManager
 import mx.cubiccoding.model.utils.Constants.Companion.ANDROID_DEVICE
-import mx.cubiccoding.model.utils.Constants.Companion.AUTHORIZATON_HEADER
+import mx.cubiccoding.model.utils.Constants.Companion.AUTHORIZATION_HEADER
 import mx.cubiccoding.persistence.preferences.UserPersistedData
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -56,7 +55,7 @@ object UserRequest {
                     UserPersistedData.isLogged = true
 
                     //Get cubiccoding's api token
-                    response.headers()[AUTHORIZATON_HEADER]?.apply {
+                    response.headers()[AUTHORIZATION_HEADER]?.apply {
                         UserPersistedData.ccToken = this
                         Timber.d("Saved user token: $this")
                     }

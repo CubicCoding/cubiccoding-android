@@ -106,7 +106,7 @@ class ScoreboardFragment: Fragment(), Pubsub.Listener {
         swipeRefreshLayout.isRefreshing = false
 
         if (scoreboardItems.isNotEmpty()) {
-            adapter?.populateScoreboard(scoreboardItems)
+            adapter.populateScoreboard(scoreboardItems)
             tournament.text = tournnament
             tournament.visibility = View.VISIBLE
             lastSync.text = getDefaultFormattedDateFromMillis(ScoreboardMetadata.lastNetworkUpdate)

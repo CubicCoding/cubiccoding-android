@@ -36,7 +36,8 @@ class StudentScoreboardViewModel(private val email: String, private val tourname
             //Convert to Summary items
             val multipleOptions = scoreboardSummary?.multipleOptions?.map { ScoreboardSummaryDataItem(ScoreboardSummaryDataItem.ScoreboardSummaryItemType.MULTI_OPTIONS, it) }
             val challenges = scoreboardSummary?.challenges?.map { ScoreboardSummaryDataItem(ScoreboardSummaryDataItem.ScoreboardSummaryItemType.CHALLENGES, it) }
-            summary.postValue(ScoreboardSummaryModelResult(multipleOptions ?: emptyList(), challenges ?: emptyList()))
+            val bonusPoints = scoreboardSummary?.bonusPoints?.map { ScoreboardSummaryDataItem(ScoreboardSummaryDataItem.ScoreboardSummaryItemType.BONUS_POINTS, it) }
+            summary.postValue(ScoreboardSummaryModelResult(multipleOptions ?: emptyList(), challenges ?: emptyList(), bonusPoints ?: emptyList()))
             isLoading.postValue(false)
         }
     }
@@ -46,5 +47,5 @@ class StudentScoreboardViewModel(private val email: String, private val tourname
         summary.postValue(null)
     }
 
-    data class ScoreboardSummaryModelResult(val multipleOptions: List<ScoreboardSummaryDataItem>, val challenges: List<ScoreboardSummaryDataItem>)
+    data class ScoreboardSummaryModelResult(val multipleOptions: List<ScoreboardSummaryDataItem>, val challenges: List<ScoreboardSummaryDataItem>, val bonusPoints: List<ScoreboardSummaryDataItem>)
 }
