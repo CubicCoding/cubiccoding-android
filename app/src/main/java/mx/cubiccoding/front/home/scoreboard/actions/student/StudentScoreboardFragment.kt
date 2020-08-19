@@ -74,6 +74,10 @@ class StudentScoreboardFragment: Fragment() {
 
         Timber.e("Track, StudentScoreboardFragment email: $email")
 
+        closeBtn.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
         val model: StudentScoreboardViewModel by viewModels { StudentViewModelFactory(email ?: "", ScoreboardMetadata.lastActiveTournamentId) }
         model.isLoading.observe(viewLifecycleOwner, Observer {
             progress.visibility = if (it) View.VISIBLE else View.GONE
