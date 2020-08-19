@@ -17,8 +17,9 @@ data class ScoreboardItemPayload(val rank: Int?, var currentScore: Float?, var t
 }
 data class ScoreboardResponsePayload(val tournamentInfo: TournamentInfo?, val secondaries: List<ScoreboardItemPayload>)
 data class MultipleOptionsSummaryPayload(val questionTitle: String?, val options: List<String>, val answers: List<Int>, val userAnswers: List<Int>, val createdDate: String?, val scoredRatio: Float?, val maxScore: Int?)
+data class BonusPointsPayload(val title: String?, val score: Int?, val createdDate: String?, val reason: String, val description: String?)
 data class ChallengeSummaryPayload(val questionTitle: String?, val maxScore: Int?, val createdDate: String?, val scoredRatio: Float?, val description: String?)
-data class ScoreboardUserSummaryPayload(val multipleOptions: List<MultipleOptionsSummaryPayload>, val challenges: List<ChallengeSummaryPayload>)
+data class ScoreboardUserSummaryPayload(val multipleOptions: List<MultipleOptionsSummaryPayload>, val challenges: List<ChallengeSummaryPayload>, val bonusPoints: List<BonusPointsPayload>)
 data class GetTestResponsePayload(val uuid: String?, val label: String?, val questionTitle: String?, val scoreTestType: String, val options: List<String>, val answers: List<Int>, val maxScore: Int)
 data class TimelineStepPayload(val name: String, val description: String, val topics: List<String>)
 data class TimelineProgressPayload(val classroomName: String?, val timelineProgress: Int)

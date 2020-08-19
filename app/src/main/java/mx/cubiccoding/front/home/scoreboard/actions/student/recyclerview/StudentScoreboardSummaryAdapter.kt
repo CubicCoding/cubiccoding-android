@@ -13,6 +13,7 @@ class StudentScoreboardSummaryAdapter: RecyclerView.Adapter<StudentScoreboardVie
     override fun getItemViewType(position: Int): Int {
         return when(items[position].type) {
             ScoreboardSummaryDataItem.ScoreboardSummaryItemType.CHALLENGES -> R.layout.challenges_summary_item
+            ScoreboardSummaryDataItem.ScoreboardSummaryItemType.BONUS_POINTS -> R.layout.bonus_summary_item
             else -> R.layout.multioptions_summary_item
         }
     }
@@ -22,6 +23,7 @@ class StudentScoreboardSummaryAdapter: RecyclerView.Adapter<StudentScoreboardVie
         return when(viewType) {
             R.layout.challenges_summary_item -> StudentSummaryChallengeViewHolder(view)
             R.layout.multioptions_summary_item -> StudentSummaryOptionsViewHolder(view)
+            R.layout.bonus_summary_item -> StudentSummaryBonusViewHolder(view)
             else -> throw IllegalStateException("No view holder type found for: $viewType")
         }
     }

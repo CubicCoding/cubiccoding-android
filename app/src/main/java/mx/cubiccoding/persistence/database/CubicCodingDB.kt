@@ -12,8 +12,7 @@ import mx.cubiccoding.persistence.database.scoreboard.ScoreboardEntity
 import mx.cubiccoding.persistence.database.timeline.TimelineDao
 import mx.cubiccoding.persistence.database.timeline.TimelineEntity
 
-@Database(entities = [ScoreboardEntity::class, QuestionEntity::class, TimelineEntity::class], version = 2
-    , exportSchema = false)
+@Database(entities = [ScoreboardEntity::class, QuestionEntity::class, TimelineEntity::class], version = 2, exportSchema = false)
 abstract class CubicCodingDB: RoomDatabase() {
     abstract fun getScoreboardDao(): ScoreboardDao
     abstract fun getTimelineDao(): TimelineDao

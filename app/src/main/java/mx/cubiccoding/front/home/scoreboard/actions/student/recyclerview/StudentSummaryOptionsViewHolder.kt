@@ -1,19 +1,14 @@
 package mx.cubiccoding.front.home.scoreboard.actions.student.recyclerview
 
-import android.service.autofill.TextValueSanitizer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.marginTop
 import kotlinx.android.synthetic.main.multioptions_summary_item.view.*
-import kotlinx.android.synthetic.main.question_option_item.view.*
 import mx.cubiccoding.R
 import mx.cubiccoding.front.utils.getCachedColor
 import mx.cubiccoding.model.dtos.MultipleOptionsSummaryPayload
-import mx.cubiccoding.model.utils.fromHtml
 import mx.cubiccoding.model.utils.getDefaultFormattedDateFromServerDate
-import java.lang.StringBuilder
 
 class StudentSummaryOptionsViewHolder(view: View): StudentScoreboardViewHolder(view) {
     override fun bind(item: ScoreboardSummaryDataItem) {

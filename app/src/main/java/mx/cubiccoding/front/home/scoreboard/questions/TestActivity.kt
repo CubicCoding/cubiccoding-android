@@ -24,7 +24,6 @@ import mx.cubiccoding.model.utils.Constants
 import mx.cubiccoding.model.workers.UploadAnswerWorker
 import mx.cubiccoding.persistence.database.CubicCodingDB
 import mx.cubiccoding.persistence.database.questions.QuestionEntity
-import mx.cubiccoding.persistence.preferences.UserPersistedData
 import org.json.JSONArray
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
