@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.view.MenuItem
 import com.donaumorgen.utel.model.pubsub.PubsubEvents
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import mx.cubiccoding.R
 import mx.cubiccoding.front.home.scoreboard.actions.GetTestBottomDialogFragment
 import mx.cubiccoding.front.mvp.BaseMVPPresenter
 import mx.cubiccoding.front.utils.IntentUtils
 import mx.cubiccoding.front.utils.isActivityAlive
 import mx.cubiccoding.model.pubsub.Pubsub
+import mx.cubiccoding.persistence.preferences.UserPersistedData
 import timber.log.Timber
 
 class HomePresenter: BaseMVPPresenter<HomeViewContract, HomeModel>(), Pubsub.Listener {
@@ -19,11 +21,17 @@ class HomePresenter: BaseMVPPresenter<HomeViewContract, HomeModel>(), Pubsub.Lis
     override fun init(viewContract: HomeViewContract, model: HomeModel) {
         super.init(viewContract, model)
         Pubsub.INSTANCE.addListener(this, PubsubEvents.LAUNCH_STUDENT_SCOREBOARD_FRAGMENT)
+
+        setupCrashlyticsInformation()
     }
 
     override fun terminate() {
         super.terminate()
         Pubsub.INSTANCE.removeListener(PubsubEvents.LAUNCH_STUDENT_SCOREBOARD_FRAGMENT, this)
+    }
+
+    private fun setupCrashlyticsInformation() {
+        FirebaseCrashlytics.getInstance().setUserId(UserPersistedData.username)
     }
 
     fun navigationSelected(item: MenuItem): Boolean {
