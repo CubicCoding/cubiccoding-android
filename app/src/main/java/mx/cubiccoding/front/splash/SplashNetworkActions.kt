@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.view.Gravity
 import mx.cubiccoding.front.utils.IntentUtils
+import mx.cubiccoding.front.utils.views.showFancyToast
 import mx.cubiccoding.model.utils.Constants.Companion.CUBICCODING_FACEBOOK_ANDROID_URI
 import mx.cubiccoding.model.utils.Constants.Companion.CUBICCODING_FACEBOOK_WEB_URI
 import mx.cubiccoding.model.utils.Constants.Companion.CUBICCODING_INSTAGRAM_ANDROID_URI
@@ -14,6 +16,7 @@ import mx.cubiccoding.model.utils.Constants.Companion.CUBICCODING_TWITTER_WEB_UR
 import mx.cubiccoding.model.utils.Constants.Companion.FACEBOOK_ANDROID_PACKAGE_NAME
 import mx.cubiccoding.model.utils.Constants.Companion.INSTAGRAM_ANDROID_PACKAGE_NAME
 import mx.cubiccoding.model.utils.Constants.Companion.TWITTER_ANDROID_PACKAGE_NAME
+import timber.log.Timber
 
 
 class SplashNetworkActions {
@@ -36,7 +39,14 @@ class SplashNetworkActions {
         }
 
         //Go internal or launch customized tab...
-        if (intent != null) { context.startActivity(intent) }
+        if (intent != null) {
+            try {
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                Timber.e("Error trying to launch")
+                showFancyToast(context, "Error al lanzar app...", Gravity.BOTTOM)
+            }
+        }
         else { IntentUtils.launchWebTab(context, fallbackUri) }
     }
 
